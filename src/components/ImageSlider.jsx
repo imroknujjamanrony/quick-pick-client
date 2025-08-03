@@ -12,7 +12,7 @@ export default function Carousel({ carouselItems, type, offer }) {
       5000
     );
     return () => clearInterval(intervalId);
-  }, [currentSlider]);
+  }, [carouselItems.length, currentSlider]);
 
   return (
     <div className="relative">
