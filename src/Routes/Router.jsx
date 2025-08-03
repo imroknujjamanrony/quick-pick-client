@@ -3,6 +3,7 @@ import MainLayout from "../Layouts/MainLayout/MainLayout";
 import Home from "../Pages/Home/Home";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import DetailsPage from "../Pages/Details/DetailsPage.jsx";
+import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
           path : "/products/:id",
           element : <DetailsPage/>,
 
+        },
+        {
+          path : "/filter-products",
+          element : <FilterProductPage/>
         }
       ]
     },
