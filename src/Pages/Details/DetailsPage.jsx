@@ -10,8 +10,9 @@ import {
 } from "react-icons/ai";
 // import banana1 from "../assets/download.jpg";
 import ReactStars from "react-rating-stars-component";
-import RelatedProducts from "./RelatedProducts";
-import Carousel from "./ImageSlider";
+import RelatedProducts from "../../components/RelatedProducts";
+import Carousel from "../../components/ImageSlider";
+import { useParams } from "react-router";
 
 const productDetails = {
   productName: "Marketside Fresh Organic Bananas, Bunch",
@@ -34,7 +35,8 @@ const productDetails = {
   sku: "EIUDBGIOD",
   price: 0.89,
   oldPrice: 1.99,
-  description: 'lorem50 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. lorem50 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  description:
+    "lorem50 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. lorem50 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   reviews: [
     {
       name: "John Doe",
@@ -112,7 +114,10 @@ const related = [
   },
 ];
 
-const ProductPage = () => {
+const DetailsPage = () => {
+  const { id } = useParams();
+  console.log(id);
+
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
 
@@ -120,7 +125,7 @@ const ProductPage = () => {
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   return (
-    <div className="px-4 py-8 min-h-screen">
+    <div className="px-4 py-8 min-h-screen w-[80%] mx-auto">
       {/* Top Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left - Image Slider */}
@@ -346,4 +351,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default DetailsPage;
