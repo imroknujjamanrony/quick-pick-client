@@ -125,7 +125,7 @@ const DetailsPage = () => {
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   return (
-    <div className="px-4 py-8 min-h-screen">
+    <div className="px-4 py-8 min-h-screen w-[80%] mx-auto">
       {/* Top Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left - Image Slider */}

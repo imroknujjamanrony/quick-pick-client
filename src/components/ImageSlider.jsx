@@ -32,7 +32,7 @@ export default function Carousel({ carouselItems, type, offer }) {
       </div>
 
       {/* Slider indicators */}
-      <div className="flex items-center justify-center gap-3 p-2">
+      <div className="flex items-center justify-center gap-3 p-2 mt-5">
         {carouselItems.map((slide, inx) => (
           <img
             onClick={() => setCurrentSlider(inx)}
