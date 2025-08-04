@@ -6,7 +6,8 @@ const products = [
   {
     id: 1,
     name: "Large Garden Spinach & Herb Wrap Tortillas - 15oz 6ct",
-    image: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
+    image:
+      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
     price: 27.9,
     oldPrice: 32.9,
     discount: 16,
@@ -15,7 +16,8 @@ const products = [
   {
     id: 2,
     name: "Organic Whole Wheat Tortillas - 12oz 8ct",
-    image: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
+    image:
+      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
     price: 24.5,
     oldPrice: 29.99,
     discount: 18,
@@ -24,7 +26,8 @@ const products = [
   {
     id: 3,
     name: "Gluten-Free Almond Flour Wraps - 10oz 5ct",
-    image: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
+    image:
+      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
     price: 31.75,
     oldPrice: 35.5,
     discount: 11,
@@ -33,7 +36,8 @@ const products = [
   {
     id: 4,
     name: "Jalapeño & Cheddar Flavored Tortillas - 14oz 6ct",
-    image: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
+    image:
+      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
     price: 26.25,
     oldPrice: null,
     discount: 0,
@@ -42,7 +46,8 @@ const products = [
   {
     id: 5,
     name: "Sun-Dried Tomato & Basil Wraps - 13oz 7ct",
-    image: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
+    image:
+      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
     price: 28.99,
     oldPrice: 34.2,
     discount: 15,
@@ -51,29 +56,29 @@ const products = [
   {
     id: 6,
     name: "Low-Carb Keto Friendly Tortillas - 9oz 10ct",
-    image: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
+    image:
+      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
     price: 35.4,
     oldPrice: 39.99,
     discount: 12,
     inStock: true,
-  }
+  },
 ];
 
 const FilterProductPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   return (
-    <div className="p-4">
-      
-      {/* Sidebar (desktop) */}
-      <div className="hidden md:block">
+    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-x-hidden">
+      {/* Desktop Sidebar Filter */}
+      <div className="hidden md:block p-4 w-64">
         <PriceFilterWidget />
       </div>
 
-      {/* Mobile Filter */}
+      {/* Mobile Filter Overlay */}
       {mobileFilterOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex md:hidden">
-          <div className="bg-white w-3/4 max-w-xs p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 grid md:hidden" style={{ gridTemplateColumns: "minmax(0,75%) 25%" }}>
+          <div className="bg-white p-4 overflow-y-auto">
             <button
               onClick={() => setMobileFilterOpen(false)}
               className="text-red-500 mb-4"
@@ -82,42 +87,44 @@ const FilterProductPage = () => {
             </button>
             <PriceFilterWidget />
           </div>
-          <div className="flex-1" onClick={() => setMobileFilterOpen(false)} />
+          <div 
+            className="bg-black bg-opacity-40"
+            onClick={() => setMobileFilterOpen(false)}
+          />
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="flex">
-        {/* Filter Button (mobile) */}
-        <div className="mb-4 md:hidden">
-          <button
-            onClick={() => setMobileFilterOpen(true)}
-            className="bg-gray-100 px-3 py-1 rounded-full text-sm"
-          >
-            ☰ Filter
-          </button>
-        </div>
+      <div className="p-4 w-full max-w-full">
+        {/* Mobile Filter Button */}
+        <button
+          onClick={() => setMobileFilterOpen(true)}
+          className="md:hidden mb-4 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-sm"
+        >
+          ☰ Filter
+        </button>
 
-        {/* Promotion */}
-        <div className="mb-8">
-          <p className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-semibold mb-3 inline-block">
+        {/* Promotional section */}
+        <div className="mb-8 max-w-full">
+          <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-semibold mb-3 inline-block">
             Only This Week
-          </p>
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">
+          </span>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 break-words">
             Grocery store with different treasures
           </h1>
-          <p className="text-gray-500 mb-4">
+          <p className="text-gray-500 mb-4 text-sm md:text-base break-words">
             We have prepared special discounts for you on grocery products...
           </p>
-          <button className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm hover:bg-gray-800">
+          <button className="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-full text-sm md:text-base">
             Shop Now →
           </button>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {/* Products grid - Responsive columns */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (
-            <RelatedProducts key={product.id} data={product} />
+            <div key={product.id} className="">
+              <RelatedProducts data={product} />
+            </div>
           ))}
         </div>
       </div>

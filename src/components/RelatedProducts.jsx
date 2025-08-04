@@ -11,7 +11,7 @@ const RelatedProducts = ({ data }) => {
     <div className="bg-white border border-gray-200">
       {/*  Image */}
       <div className="relative">
-        <img src={image} alt={name} className="w-full object-cover h-48" />
+        <img src={image} alt={name} className="w-full object-fill h-48" />
 
         {/* Discount  */}
         {discount > 0 && (
@@ -63,7 +63,7 @@ const RelatedProducts = ({ data }) => {
         <div className="flex items-center gap-5">
           {/* Add to Cart Button */}
           <button
-            className={`py-2 px-4 rounded-md flex items-center justify-center transition-colors cursor-pointer
+            className={`py-2 px-4 rounded-md flex items-center justify-center  cursor-pointer
             ${
               inStock
                 ? "bg-green-600  text-white"
