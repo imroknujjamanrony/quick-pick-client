@@ -8,7 +8,7 @@ const RelatedProducts = ({ data }) => {
   const { name, image, price, oldPrice, discount, inStock } = data;
 
   return (
-    <div className="bg-white border border-gray-200  overflow-hidden relative">
+    <div className="bg-white border border-gray-200">
       {/*  Image */}
       <div className="relative">
         <img src={image} alt={name} className="w-full object-cover h-48" />
