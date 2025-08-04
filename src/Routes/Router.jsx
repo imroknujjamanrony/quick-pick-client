@@ -1,29 +1,49 @@
-import { createBrowserRouter, } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../Layouts/MainLayout/MainLayout";
 import Home from "../Pages/Home/Home";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+
+// Imports from both branches
+import Register from "../Pages/Register";
+import Login from "../Pages/Login";
+import Contact from "../Pages/Contact/Contact";
 import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 
 export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <MainLayout></MainLayout>,
-      errorElement: <ErrorPage></ErrorPage>,
-      children: [
-        {
-            path: "/",
-            element: <Home></Home>
-        },
-        {
-          path : "/products/:id",
-          element : <DetailsPage/>,
-
-        },
-        {
-          path : "/filter-products",
-          element : <FilterProductPage/>
-        }
-      ]
-    },
-  ]);
+  {
+    path: "/",
+    element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        path: "/",
+        element: <Home></Home>,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/products/:id",
+        element: <DetailsPage />,
+      },
+      {
+        path: "/filter-products",
+        element: <FilterProductPage />,
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
+    ],
+  },
+]);
