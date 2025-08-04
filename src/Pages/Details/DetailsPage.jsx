@@ -8,7 +8,6 @@ import {
   AiOutlineSwap,
   AiOutlineWarning,
 } from "react-icons/ai";
-// import banana1 from "../assets/download.jpg";
 import ReactStars from "react-rating-stars-component";
 import RelatedProducts from "../../components/RelatedProducts";
 import Carousel from "../../components/ImageSlider";
@@ -125,11 +124,11 @@ const DetailsPage = () => {
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   return (
-    <div className="px-4 py-8 min-h-screen w-[80%] mx-auto">
+    <div className="px-4 py-8 w-full md:w-[80%] mx-auto">
       {/* Top Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Left - Image Slider */}
-        <div className="gap-4 mt-4 w-[99%] mx-auto">
+        <div className="w-full lg:w-[45%]">
           <Carousel
             carouselItems={productDetails?.productImage}
             type={productDetails?.type}
@@ -138,13 +137,13 @@ const DetailsPage = () => {
         </div>
 
         {/* Right - Details */}
-        <div>
-          <h1 className="text-[38px] font-bold">
-            {/* {productDetails.productName} */}
+        <div className="w-full lg:w-[55%]">
+          <h1 className="text-2xl font-bold">
+            {productDetails.productName}
           </h1>
 
           {/* Rating */}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
             <ReactStars
               count={productDetails?.rattings}
               size={24}
@@ -162,18 +161,18 @@ const DetailsPage = () => {
             </span>
 
             <span className="text-sm text-gray-500">
-              {productDetails?.review}
+              {productDetails?.review} reviews
             </span>
-            <span className="text-sm text-gray-500 border-r-2 border-slate-300  h-5"></span>
-            <p>
-              <span className="text-gray-500">SKU : </span>
+            <span className="hidden sm:inline-block text-sm text-gray-500 border-r-2 border-slate-300 h-5"></span>
+            <p className="hidden sm:block">
+              <span className="text-gray-500">SKU: </span>
               <span className="">{productDetails?.sku}</span>
             </p>
           </div>
 
           {/* Price */}
           <div className="mt-3 flex items-center gap-3">
-            <span className="text-red-500 text-3xl font-bold">
+            <span className="text-red-500 text-2xl sm:text-3xl font-bold">
               ${productDetails?.price}
             </span>
             <span className="line-through text-gray-400">
@@ -181,13 +180,13 @@ const DetailsPage = () => {
             </span>
           </div>
 
-          <button className="bg-[#16a34a] text-white px-4 py-2 mt-3 rounded-lg font-semibold  cursor-pointer">
+          <button className="bg-[#16a34a] text-white px-4 py-2 mt-3 rounded-lg font-semibold cursor-pointer hover:bg-[#138a3d] transition-colors">
             Order on WhatsApp
           </button>
 
           {/* Special Offer */}
           <div className="bg-orange-50 border border-orange-300 p-3 rounded-lg mt-4">
-            <div className=" sm:flex gap-3  items-center space-y-2 sm:space-y-0">
+            <div className="flex flex-wrap gap-3 items-center">
               <p className="text-orange-600 text-sm font-bold">
                 Special Offer:
               </p>
@@ -202,50 +201,51 @@ const DetailsPage = () => {
                 50
               </div>
               <p className="text-sm font-medium">
-                Remains untill the end of the offer
+                Remains until the end of the offer
               </p>
             </div>
           </div>
 
           {/* Quantity & Buttons */}
-          <div className="flex items-center gap-3 mt-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-4">
             <div className="flex border-slate-300 border-2 rounded">
               <button
                 onClick={decreaseQty}
-                className="px-1 py-1 cursor-pointer"
+                className="px-3 py-1 cursor-pointer hover:bg-gray-100"
               >
                 -
               </button>
               <input
                 type="text"
                 value={quantity}
-                className="w-12 text-center -x"
+                className="w-12 text-center border-x border-slate-300"
                 readOnly
-                disabled
               />
               <button
                 onClick={increaseQty}
-                className="px-1 py-1 cursor-pointer"
+                className="px-3 py-1 cursor-pointer hover:bg-gray-100"
               >
                 +
               </button>
             </div>
-            <button className="bg-[#16a34a] text-white px-5 py-2 rounded-lg font-semibold cursor-pointer">
-              Add to Cart
-            </button>
-            <button className="bg-[#212529] text-white px-5 py-2 rounded-lg font-semibold cursor-pointer">
-              Buy Now
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <button className="bg-[#16a34a] text-white px-5 py-2 rounded-lg font-semibold cursor-pointer hover:bg-[#138a3d] transition-colors">
+                Add to Cart
+              </button>
+              <button className="bg-[#212529] text-white px-5 py-2 rounded-lg font-semibold cursor-pointer hover:bg-[#3a4149] transition-colors">
+                Buy Now
+              </button>
+            </div>
           </div>
 
           {/* Payment & Warranty */}
-          <div className="mt-4 text-sm text-gray-600 space-y-2 border-2  border-slate-200 rounded-2xl">
-            <div className="flex items-center gap-4 p-2">
-              <span>
+          <div className="mt-4 text-sm text-gray-600 space-y-2 border-2 border-slate-200 rounded-2xl p-2">
+            <div className="flex items-start gap-4">
+              <span className="mt-1">
                 <AiOutlinePayCircle />
               </span>
               <div>
-                <p className=" ">
+                <p>
                   Payment: Payment upon receipt of goods, Payment by card in the
                   department, Google Pay, Online card, -5% discount in case of
                   payment
@@ -253,8 +253,8 @@ const DetailsPage = () => {
               </div>
             </div>
             <div className="border-t-2 border-slate-200 w-[100%]"></div>
-            <div className="flex items-center gap-4 p-2">
-              <span>
+            <div className="flex items-start gap-4">
+              <span className="mt-1">
                 <AiOutlineWarning />
               </span>
               <p>
@@ -265,26 +265,24 @@ const DetailsPage = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex gap-4 mt-4 text-gray-500">
-            <button className="flex items-center gap-1">
-              <span className="border-2 border-slate-200 p-1.5">
+          <div className="flex flex-wrap gap-4 mt-4 text-gray-500">
+            <button className="flex items-center gap-1 hover:text-gray-700">
+              <span className="border-2 border-slate-200 p-1.5 rounded hover:bg-gray-100">
                 <AiOutlineHeart />
-              </span>{" "}
-              Add to wishlist
+              </span>
+              <span className="hidden sm:inline">Add to wishlist</span>
             </button>
-            <button className="flex items-center gap-1">
-              <span className="border-2 border-slate-200 p-1.5">
-                {" "}
+            <button className="flex items-center gap-1 hover:text-gray-700">
+              <span className="border-2 border-slate-200 p-1.5 rounded hover:bg-gray-100">
                 <AiOutlineShareAlt />
-              </span>{" "}
-              Share
+              </span>
+              <span className="hidden sm:inline">Share</span>
             </button>
-            <button className="flex items-center gap-1">
-              <span className="border-2 border-slate-200 p-1.5">
-                {" "}
+            <button className="flex items-center gap-1 hover:text-gray-700">
+              <span className="border-2 border-slate-200 p-1.5 rounded hover:bg-gray-100">
                 <AiOutlineSwap />
-              </span>{" "}
-              Compare
+              </span>
+              <span className="hidden sm:inline">Compare</span>
             </button>
           </div>
         </div>
@@ -292,13 +290,13 @@ const DetailsPage = () => {
 
       {/* Tabs Section */}
       <div className="mt-12 border-b border-slate-400">
-        <div className="flex gap-8">
+        <div className="flex gap-4 sm:gap-8">
           <button
             onClick={() => setActiveTab("description")}
             className={`pb-2 font-medium cursor-pointer ${
               activeTab === "description"
                 ? "border-b-2 border-black"
-                : "text-gray-500"
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
             Description
@@ -308,10 +306,10 @@ const DetailsPage = () => {
             className={`pb-2 font-medium cursor-pointer ${
               activeTab === "reviews"
                 ? "border-b-2 border-black"
-                : "text-gray-500"
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            Reviews (2)
+            Reviews ({productDetails?.reviews.length})
           </button>
         </div>
       </div>
@@ -320,14 +318,14 @@ const DetailsPage = () => {
       <div className="mt-4">
         {/* description section */}
         {activeTab === "description" && (
-          <div className="text-gray-600 text-lg font-medium space-y-4">
+          <div className="text-gray-600 text-base sm:text-lg font-medium space-y-4">
             <p>{productDetails?.description}</p>
           </div>
         )}
 
         {/* review section */}
         {activeTab === "reviews" && (
-          <div className="text-gray-600 text-lg font-medium space-y-4">
+          <div className="text-gray-600 text-base sm:text-lg font-medium space-y-4">
             {productDetails?.reviews.map((review, i) => (
               <div key={i} className="border-b py-3 text-sm text-gray-700">
                 <p className="font-semibold">{review.name}</p>
@@ -341,7 +339,7 @@ const DetailsPage = () => {
       {/* Related Products */}
       <div className="mt-10">
         <h2 className="text-lg font-bold mb-4">Related products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {related.map((product) => (
             <RelatedProducts key={product.id} data={product} />
           ))}
