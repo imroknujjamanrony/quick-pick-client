@@ -1,5 +1,6 @@
 import './App.css'
-import ProductPage from './Components/DetailsPage'
+import ProductPage from './Pages/Details/DetailsPage'
+development
 
 function App() {
 
