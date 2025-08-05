@@ -6,7 +6,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <div className='w-[1920px] mx-auto'>
+    <div>
      <RouterProvider router={router} />
     </div>
   </StrictMode>,

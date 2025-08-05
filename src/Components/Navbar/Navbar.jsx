@@ -14,10 +14,10 @@ const Navbar = () => {
 
             <div className='lg:w-[1380px] mx-auto'>
             <Header></Header>
-            <div className="flex items-center justify-between py-4 gap-2 lg:gap-4">
+            <div className="flex items-center justify-between py-4 gap-2 lg:gap-4 px-2">
         <div className='flex gap-3 items-center'>
-            <img src={logo} alt="logo" />
-            <span className='text-3xl'><IoLocationOutline /></span>
+            <img className='w-32' src={logo} alt="logo" />
+            <span className='lg:text-3xl'><IoLocationOutline /></span>
             <p>Deliver to <span className='font-bold'>all</span></p>
         </div>
         <div>
