@@ -1,21 +1,19 @@
 // RelatedProducts.js
-import React from "react";
 import { AiOutlineStar } from "react-icons/ai";
 import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
-import ReactStars from "react-rating-stars-component";
 
 const RelatedProducts = ({ data }) => {
   const { name, image, price, oldPrice, discount, inStock } = data;
 
   return (
-    <div className="bg-white border border-gray-200">
+    <div className="bg-white border w-auto border-gray-200">
       {/*  Image */}
-      <div className="relative">
-        <img src={image} alt={name} className="w-full object-fill h-48" />
+      <div className="w-full relative">
+        <img src={image} alt={name} className="w-full h-48" />
 
         {/* Discount  */}
         {discount > 0 && (
-          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute top-2 left-2">
+          <span className=" bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute top-2 left-2">
             {discount}%
           </span>
         )}
