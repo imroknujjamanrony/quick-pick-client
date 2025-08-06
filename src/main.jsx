@@ -6,7 +6,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <div className='w-[1920px] mx-auto'>
+    <div className='max-w-screen mx-auto overflow-x-hidden'>
      <RouterProvider router={router} />
     </div>
   </StrictMode>,
