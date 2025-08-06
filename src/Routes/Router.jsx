@@ -9,6 +9,7 @@ import Login from "../Pages/Login";
 import Contact from "../Pages/Contact/Contact";
 import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
+import AuthTab from "../Components/AuthTab.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: "/filter-products",
         element: <FilterProductPage />,
+      },
+      {
+        path: '/tabs',
+        element:<AuthTab></AuthTab>
       },
       {
         path: "*",
