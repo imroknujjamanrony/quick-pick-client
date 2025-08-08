@@ -19,13 +19,13 @@ const Categories = () => {
     return (
         <div>
             <aside className="w-full lg:w-3/4 mb-8 lg:mb-0">
-          <div className="rounded-lg shadow p-2">
+          <div className="rounded-lg shadow h-[555px] px-5">
             <h2 className="text-lg font-bold mb-4">All Categories</h2>
             <ul className="space-y-4">
               {categories.map((cat, index) => (
                 <li
                   key={index}
-                  className="flex items-center border-b border-[#E5E7EB] text-gray-700 hover:text-purple-700 cursor-pointer transition"
+                  className="flex items-center pb-1 border-b border-[#E5E7EB] text-gray-700 hover:text-purple-700 cursor-pointer transition"
                 >
                   <span className="mr-3 text-lg">{cat.icon}</span>
                   <span>{cat.name}</span>
