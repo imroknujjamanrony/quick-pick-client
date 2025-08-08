@@ -1,24 +1,40 @@
-import React, { useContext, useState } from "react";
-import PriceFilterWidget from "../../components/PriceFilterWidget";
-import RelatedProducts from "../../components/RelatedProducts";
-import { SearchContext } from "../../providers/SearchProvider";
-import { useProducts } from "../../hooks/useProduct";
+import { useState, useEffect } from "react";
+import { useProducts } from "../../hooks/useProduct.js";
+import PriceFilterWidget from "../../components/PriceFilterWidget.jsx";
+import Pagination from "../../components/Pagination";
 import { Link } from "react-router-dom";
+import RelatedProducts from "../../components/RelatedProducts.jsx";
 
 const FilterProductPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [filterOption, setFilterOption] = useState("");
+  const [filterOption, setFilterOption] = useState(undefined);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
 
-  const { data, isLoading } = useProducts(filterOption);
+  const queryParams = {
+    ...filterOption,
+    page: currentPage + 1,
+    limit: itemsPerPage,
+  };
+
+  console.log(queryParams);
+
+  const { data, isLoading, isFetching } = useProducts(queryParams);
+
   console.log(data);
 
-  if (isLoading) return <div>loading</div>;
+  const totalPages = data?.data?.totalPages || 1;
+  const productsData = data?.data?.products || [];
+  const totalItems = data?.data?.total || 0;
 
   return (
     <div className="flex flex-col md:flex-row overflow-hidden border-gray-300">
       {/* Sidebar Filter */}
-      <aside className="hidden md:block w-64 p-4 border-r bg-white ">
-        <PriceFilterWidget setFilterOption={setFilterOption} />
+      <aside className="hidden md:block w-64 p-4 border-r bg-white">
+        <PriceFilterWidget
+          setFilterOption={setFilterOption}
+          currentPage={currentPage}
+        />
       </aside>
 
       {/* Mobile Filter Overlay */}
@@ -31,7 +47,10 @@ const FilterProductPage = () => {
             >
               ✕ Close
             </button>
-            <PriceFilterWidget setFilterOption={setFilterOption} />
+            <PriceFilterWidget
+              setFilterOption={setFilterOption}
+              currentPage={currentPage}
+            />
           </div>
         </div>
       )}
@@ -55,21 +74,65 @@ const FilterProductPage = () => {
             Grocery store with different treasures
           </h1>
           <p className="text-gray-500 mb-4 text-sm md:text-base">
-            We have prepared special discounts for you on grocery products...
+            Showing {productsData.length} of {totalItems} products
           </p>
-          <button className="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2 rounded-full text-sm md:text-base">
-            Shop Now →
-          </button>
         </section>
 
         {/* Product Grid */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {data?.data?.products?.map((product) => (
-            <Link to={`/product/${product?._id}`} key={product?._id} className="">
-              <RelatedProducts key={product?._id} data={product} />
-            </Link>
-          ))}
+        <section className="mb-8 min-h-[500px]">
+          {!isLoading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {productsData.map((product) => (
+                <Link to={`/product/${product._id}`} key={product._id}>
+                  <RelatedProducts data={product} />
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div
+            className={`flex justify-center mt-8 ${
+              isFetching || isLoading ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            {/* <Pagination
+              pageCount={totalPages}
+              onPageChange={handlePageChange}
+              forcePage={currentPage}
+              disableInitialCallback={true}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+            /> */}
+
+            <div className="space-x-4">
+              <button
+                className="border-2 rounded-2xl p-2 cursor-pointer"
+                onClick={() => setCurrentPage((old) => Math.max(old - 1, 0))}
+                disabled={currentPage === 0}
+              >
+                Previous Page
+              </button>
+              <span>
+                Current Page: {currentPage + 1}/{totalPages}
+              </span>
+
+              <button
+                className="border-2 rounded-2xl p-2 cursor-pointer"
+                onClick={() =>
+                  setCurrentPage((old) =>
+                    old + 1 < totalPages ? old + 1 : old
+                  )
+                }
+                disabled={currentPage + 1 >= totalPages}
+              >
+                Next Page
+              </button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function Carousel({ carouselItems, isOrganic, offer }) {
-  console.log(carouselItems);
+  // console.log(carouselItems);
   const [currentSlider, setCurrentSlider] = useState(0);
 
 
@@ -15,7 +15,7 @@ export default function Carousel({ carouselItems, isOrganic, offer }) {
       5000
     );
     return () => clearInterval(intervalId);
-  }, [carouselItems.length, currentSlider]);
+  }, [carouselItems?.length, currentSlider]);
 
   return (
     <div className="relative">

@@ -32,7 +32,7 @@ const RelatedProducts = ({ data }) => {
         <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
           <FaHeart className="text-gray-600" />
         </button>
-            {/* Organic tag */}
+        {/* Organic tag */}
         {isOrganic == "true" && (
           <span className="text-gray-200 text-xs font-semibold mb-4 absolute bottom-0 ml-4  rounded-3xl p-2 bg-green-600 ">
             ✅ Organic
@@ -42,8 +42,10 @@ const RelatedProducts = ({ data }) => {
 
       {/* Product details */}
       <div className="p-4">
-        <h3 className="text-sm font-semibold text-gray-800 mb-1">{title}</h3>
-    
+        <h3 className="text-sm font-semibold text-gray-800 mb-1">
+          {productname}
+        </h3>
+
         {/* Rating (Static) */}
         <div className="flex items-center mb-2">
           <span className="flex text-yellow-400">

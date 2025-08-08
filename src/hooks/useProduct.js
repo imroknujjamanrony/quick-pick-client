@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   fetchProduct,
   fetchSingleProduct,
@@ -7,8 +7,8 @@ import {
 export const useProducts = (filters = {}) => {
   return useQuery({
     queryKey: ["products", filters],
-    queryFn: () => fetchProduct(filters),
-    
+    queryFn: () => fetchProduct(filters),    
+    placeholderData : keepPreviousData
   });
 };
 
