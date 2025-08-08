@@ -1,6 +1,7 @@
 // RelatedProducts.js
 import { AiOutlineStar } from "react-icons/ai";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const RelatedProducts = ({ data }) => {
   const {
@@ -21,23 +22,28 @@ const RelatedProducts = ({ data }) => {
     <div className="bg-white border w-auto border-gray-200 rounded-md shadow-sm">
       {/*  Image */}
       <div className="w-full relative">
-        <img src={image} alt={productname} className="w-full h-48 object-cover" />
+        <img
+          src={image}
+          alt={productname}
+          className="w-full h-48 object-cover"
+        />
 
         {/* Wishlist Button */}
         <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
           <FaHeart className="text-gray-600" />
         </button>
+            {/* Organic tag */}
+        {isOrganic == "true" && (
+          <span className="text-gray-200 text-xs font-semibold mb-4 absolute bottom-0 ml-4  rounded-3xl p-2 bg-green-600 ">
+            ✅ Organic
+          </span>
+        )}
       </div>
 
       {/* Product details */}
       <div className="p-4">
         <h3 className="text-sm font-semibold text-gray-800 mb-1">{title}</h3>
-        {/* Organic tag */}
-        {isOrganic == "true" && (
-          <span className="inline-block text-green-600 text-xs font-semibold mb-2">
-            ✅ Organic
-          </span>
-        )}
+    
         {/* Rating (Static) */}
         <div className="flex items-center mb-2">
           <span className="flex text-yellow-400">
@@ -52,7 +58,9 @@ const RelatedProducts = ({ data }) => {
 
         {/* Price */}
         <div className="flex items-center mb-3">
-          <span className="text-lg font-bold text-gray-900">${parseFloat(price).toFixed(2)}</span>
+          <span className="text-lg font-bold text-gray-900">
+            ${parseFloat(price).toFixed(2)}
+          </span>
         </div>
 
         {/* Buttons and stock */}
@@ -68,7 +76,11 @@ const RelatedProducts = ({ data }) => {
             <FaShoppingCart className="mr-2" />
           </button>
 
-          <p className={`text-xs font-medium ${inStock ? "text-green-600" : "text-red-600"}`}>
+          <p
+            className={`text-xs font-medium ${
+              inStock ? "text-green-600" : "text-red-600"
+            }`}
+          >
             {inStock ? "IN STOCK" : "OUT OF STOCK"}
           </p>
         </div>

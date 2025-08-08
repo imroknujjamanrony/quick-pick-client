@@ -3,10 +3,11 @@ import PriceFilterWidget from "../../components/PriceFilterWidget";
 import RelatedProducts from "../../components/RelatedProducts";
 import { SearchContext } from "../../providers/SearchProvider";
 import { useProducts } from "../../hooks/useProduct";
+import { Link } from "react-router-dom";
 
 const FilterProductPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [filterOption, setFilterOption] = useState('');
+  const [filterOption, setFilterOption] = useState("");
 
   const { data, isLoading } = useProducts(filterOption);
   console.log(data);
@@ -14,33 +15,29 @@ const FilterProductPage = () => {
   if (isLoading) return <div>loading</div>;
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden">
+    <div className="flex flex-col md:flex-row overflow-hidden border-gray-300">
       {/* Sidebar Filter */}
-      <aside className="hidden md:block w-64 p-4 border-r bg-white">
+      <aside className="hidden md:block w-64 p-4 border-r bg-white ">
         <PriceFilterWidget setFilterOption={setFilterOption} />
       </aside>
 
       {/* Mobile Filter Overlay */}
       {mobileFilterOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
-          <div className="w-3/4 bg-white p-4 overflow-y-auto">
+          <div className="w-1.5/3 bg-white p-4 overflow-y-auto">
             <button
               onClick={() => setMobileFilterOpen(false)}
               className="text-red-500 mb-4"
             >
               ✕ Close
             </button>
-            <PriceFilterWidget />
+            <PriceFilterWidget setFilterOption={setFilterOption} />
           </div>
-          <div
-            className="w-1/4 bg-black bg-opacity-40"
-            onClick={() => setMobileFilterOpen(false)}
-          />
         </div>
       )}
 
       {/* Main Content */}
-      <main className="flex-1 p-4">
+      <main className="flex-1 p-4 md:ml-20">
         {/* Mobile Filter Button */}
         <button
           onClick={() => setMobileFilterOpen(true)}
@@ -68,9 +65,9 @@ const FilterProductPage = () => {
         {/* Product Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data?.data?.products?.map((product) => (
-            <div key={product?._id} className="">
-              <RelatedProducts data={product} />
-            </div>
+            <Link to={`/product/${product?._id}`} key={product?._id} className="">
+              <RelatedProducts key={product?._id} data={product} />
+            </Link>
           ))}
         </section>
       </main>
