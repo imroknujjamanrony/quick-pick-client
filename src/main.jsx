@@ -8,6 +8,7 @@ import TanStackProvider from "./providers/TanStackProvider";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+
     <div className="max-w-screen mx-auto overflow-x-hidden">
       <TanStackProvider>
         <SearchProvider>
