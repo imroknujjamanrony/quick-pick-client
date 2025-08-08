@@ -1,78 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import PriceFilterWidget from "../../components/PriceFilterWidget";
 import RelatedProducts from "../../components/RelatedProducts";
-
-const products = [
-  {
-    id: 1,
-    name: "Large Garden Spinach & Herb Wrap Tortillas - 15oz 6ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 27.9,
-    oldPrice: 32.9,
-    discount: 16,
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: "Organic Whole Wheat Tortillas - 12oz 8ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 24.5,
-    oldPrice: 29.99,
-    discount: 18,
-    inStock: true,
-  },
-  {
-    id: 3,
-    name: "Gluten-Free Almond Flour Wraps - 10oz 5ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 31.75,
-    oldPrice: 35.5,
-    discount: 11,
-    inStock: false,
-  },
-  {
-    id: 4,
-    name: "Jalapeño & Cheddar Flavored Tortillas - 14oz 6ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 26.25,
-    oldPrice: null,
-    discount: 0,
-    inStock: true,
-  },
-  {
-    id: 5,
-    name: "Sun-Dried Tomato & Basil Wraps - 13oz 7ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 28.99,
-    oldPrice: 34.2,
-    discount: 15,
-    inStock: true,
-  },
-  {
-    id: 6,
-    name: "Low-Carb Keto Friendly Tortillas - 9oz 10ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 35.4,
-    oldPrice: 39.99,
-    discount: 12,
-    inStock: true,
-  },
-];
+import { SearchContext } from "../../providers/SearchProvider";
+import { useProducts } from "../../hooks/useProduct";
 
 const FilterProductPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [filterOption, setFilterOption] = useState('');
 
-    return (
+  const { data, isLoading } = useProducts(filterOption);
+  console.log(data);
+
+  if (isLoading) return <div>loading</div>;
+
+  return (
     <div className="flex flex-col md:flex-row overflow-hidden">
       {/* Sidebar Filter */}
       <aside className="hidden md:block w-64 p-4 border-r bg-white">
-        <PriceFilterWidget />
+        <PriceFilterWidget setFilterOption={setFilterOption} />
       </aside>
 
       {/* Mobile Filter Overlay */}
@@ -122,8 +67,8 @@ const FilterProductPage = () => {
 
         {/* Product Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <div key={product.id} className="">
+          {data?.data?.products?.map((product) => (
+            <div key={product?._id} className="">
               <RelatedProducts data={product} />
             </div>
           ))}

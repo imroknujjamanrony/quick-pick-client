@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Notification from "./Notification";
 import Header from "./Header";
 import logo from "../../assets/Logo/Group 70.png";
@@ -6,8 +6,11 @@ import { IoLocationOutline } from "react-icons/io5";
 import { RiContactsLine } from "react-icons/ri";
 import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
+import { SearchContext } from "../../providers/SearchProvider";
 
 const Navbar = () => {
+  const { searchValue, setSearchValue } = useContext(SearchContext);
+  console.log(searchValue)
   return (
     <nav>
       <Notification></Notification>
@@ -46,6 +49,8 @@ const Navbar = () => {
                 type="search"
                 required
                 placeholder="Search for products, categories or brands..."
+                onChange={(e) => setSearchValue(e.target.value)}
+                // defaultValue={searchValue}
               />
             </label>
           </div>
