@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { SearchContext } from "../providers/SearchProvider";
+import { div } from "framer-motion/client";
 
-const PriceFilterWidget = () => {
+const PriceFilterWidget = ({ setFilterOption }) => {
   // State variables
   const [minPrice, setMinPrice] = useState("0");
   const [maxPrice, setMaxPrice] = useState("30");
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [status, setStatus] = useState([]);
+  const { searchValue, setSearchValue } = useContext(SearchContext);
 
   const category = [
     "Fruits & Vegetables",
@@ -22,13 +25,7 @@ const PriceFilterWidget = () => {
     "Household Needs",
   ];
 
-  const brand = [
-    "Fresh",
-    "coca-cola",
-    "Nestle",   
-    "Pran",
-    "Unilever",
-  ]
+  const brand = ["Fresh", "coca-cola", "Nestle", "Pran", "Unilever"];
 
   // Generic checkbox handler
   const handleCheckboxChange = (e, setState) => {
@@ -56,16 +53,34 @@ const PriceFilterWidget = () => {
       return;
     }
 
+    setFilterOption({
+      minPrice: min,
+      maxPrice: max,
+      categories,
+      brands,
+      status,
+      searchValue,
+    });
+
     console.log({
       minPrice: min,
       maxPrice: max,
       categories,
       brands,
       status,
+      searchValue,
     });
+
+    // setMinPrice("0");
+    // setMaxPrice("30");
+    // setCategories([]);
+    // setBrands([]);
+    // setStatus([]);
+    // setSearchValue("");
   };
 
   return (
+    
     <form
       className="w-64 bg-white p-4 font-sans text-sm text-gray-800"
       onSubmit={handleSubmit}
@@ -169,7 +184,7 @@ const PriceFilterWidget = () => {
               onChange={(e) => handleCheckboxChange(e, setStatus)}
               className="mr-2"
             />
-           <p>{stat}</p>
+            <p>{stat}</p>
           </div>
         ))}
       </div>

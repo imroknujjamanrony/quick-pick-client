@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-    errorElement: <ErrorPage></ErrorPage>,
+    // errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -35,16 +35,18 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "/products/:id",
+        path: "/product/:id",
         element: <DetailsPage />,
+
       },
+
       {
         path: "/filter-products",
         element: <FilterProductPage />,
       },
       {
-        path: '/tabs',
-        element:<AuthTab></AuthTab>
+        path: "/tabs",
+        element: <AuthTab></AuthTab>,
       },
       {
         path: "*",

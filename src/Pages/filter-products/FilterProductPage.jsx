@@ -1,134 +1,144 @@
-import React, { useState } from "react";
-import PriceFilterWidget from "../../components/PriceFilterWidget";
-import RelatedProducts from "../../components/RelatedProducts";
-
-const products = [
-  {
-    id: 1,
-    name: "Large Garden Spinach & Herb Wrap Tortillas - 15oz 6ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 27.9,
-    oldPrice: 32.9,
-    discount: 16,
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: "Organic Whole Wheat Tortillas - 12oz 8ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 24.5,
-    oldPrice: 29.99,
-    discount: 18,
-    inStock: true,
-  },
-  {
-    id: 3,
-    name: "Gluten-Free Almond Flour Wraps - 10oz 5ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 31.75,
-    oldPrice: 35.5,
-    discount: 11,
-    inStock: false,
-  },
-  {
-    id: 4,
-    name: "Jalapeño & Cheddar Flavored Tortillas - 14oz 6ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 26.25,
-    oldPrice: null,
-    discount: 0,
-    inStock: true,
-  },
-  {
-    id: 5,
-    name: "Sun-Dried Tomato & Basil Wraps - 13oz 7ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 28.99,
-    oldPrice: 34.2,
-    discount: 15,
-    inStock: true,
-  },
-  {
-    id: 6,
-    name: "Low-Carb Keto Friendly Tortillas - 9oz 10ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 35.4,
-    oldPrice: 39.99,
-    discount: 12,
-    inStock: true,
-  },
-];
+import { useState, useEffect } from "react";
+import { useProducts } from "../../hooks/useProduct.js";
+import PriceFilterWidget from "../../components/PriceFilterWidget.jsx";
+import Pagination from "../../components/Pagination";
+import { Link } from "react-router-dom";
+import RelatedProducts from "../../components/RelatedProducts.jsx";
 
 const FilterProductPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [filterOption, setFilterOption] = useState(undefined);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  const queryParams = {
+    ...filterOption,
+    page: currentPage + 1,
+    limit: itemsPerPage,
+  };
+
+  console.log(queryParams);
+
+  const { data, isLoading, isFetching } = useProducts(queryParams);
+
+  console.log(data);
+
+  const totalPages = data?.data?.totalPages || 1;
+  const productsData = data?.data?.products || [];
+  const totalItems = data?.data?.total || 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] overflow-x-hidden">
-      {/* Desktop Sidebar Filter */}
-      <div className="hidden md:block p-4 w-64">
-        <PriceFilterWidget />
-      </div>
+    <div className="flex flex-col md:flex-row md:w-[80%] mx-auto">
+  {/* Sidebar Filter - Desktop */}
+  <aside className="hidden md:block md:w-64 flex-shrink-0 p-4 bg-white border-gray-200">
+    <PriceFilterWidget
+      setFilterOption={setFilterOption}
+      currentPage={currentPage}
+    />
+  </aside>
 
-      {/* Mobile Filter Overlay */}
-      {mobileFilterOpen && (
-        <div className="fixed inset-0 z-50 grid md:hidden" style={{ gridTemplateColumns: "minmax(0,75%) 25%" }}>
-          <div className="bg-white p-4 overflow-y-auto">
-            <button
-              onClick={() => setMobileFilterOpen(false)}
-              className="text-red-500 mb-4"
-            >
-              ✕ Close
-            </button>
-            <PriceFilterWidget />
-          </div>
-          <div 
-            className="bg-black bg-opacity-40"
-            onClick={() => setMobileFilterOpen(false)}
-          />
-        </div>
-      )}
+  {/* Mobile Filter Overlay */}
+  {mobileFilterOpen && (
+    <div className="fixed inset-0 z-50 flex md:hidden">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-transparent bg-opacity-40"
+        onClick={() => setMobileFilterOpen(false)}
+      ></div>
 
-      <div className="p-4 w-full max-w-full">
-        {/* Mobile Filter Button */}
+      {/* Sidebar Content */}
+      <div className="relative w-3/4 bg-white p-4 shadow-lg overflow-y-auto z-50">
         <button
-          onClick={() => setMobileFilterOpen(true)}
-          className="md:hidden mb-4 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-sm"
+          onClick={() => setMobileFilterOpen(false)}
+          className="text-red-500 mb-4 font-semibold"
         >
-          ☰ Filter
+          ✕ Close
         </button>
-
-        {/* Promotional section */}
-        <div className="mb-8 max-w-full">
-          <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-semibold mb-3 inline-block">
-            Only This Week
-          </span>
-          <h1 className="text-2xl md:text-3xl font-bold mb-2 break-words">
-            Grocery store with different treasures
-          </h1>
-          <p className="text-gray-500 mb-4 text-sm md:text-base break-words">
-            We have prepared special discounts for you on grocery products...
-          </p>
-          <button className="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-full text-sm md:text-base">
-            Shop Now →
-          </button>
-        </div>
-
-        {/* Products grid - Responsive columns */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <div key={product.id} className="">
-              <RelatedProducts data={product} />
-            </div>
-          ))}
-        </div>
+        <PriceFilterWidget
+          setFilterOption={setFilterOption}
+          currentPage={currentPage}
+        />
       </div>
     </div>
+  )}
+
+  {/* Main Content */}
+  <main className="flex-1 p-4">
+    {/* Mobile Filter Button */}
+    <button
+      onClick={() => setMobileFilterOpen(true)}
+      className="md:hidden mb-4 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm"
+    >
+      ☰ Filter
+    </button>
+
+    {/* Promotional Section */}
+    <section className="mb-8 space-y-2">
+      <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-semibold mb-2 inline-block">
+        Only This Week
+      </span>
+      <h1 className="text-2xl md:text-3xl font-bold mb-2">
+        Grocery store with different treasures
+      </h1>
+      <p className="text-gray-500 text-md">
+        We have prepared special discount for you on grocery
+      </p>
+      <button className="border-2 p-1.5 rounded-2xl mt-2">shop now</button>
+      <p className="text-gray-500 mb-4 text-sm md:text-base">
+        Showing {productsData.length} of {totalItems} products
+      </p>
+    </section>
+
+    {/* Product Grid */}
+    <section className="mb-8 min-h-[500px]">
+      {!isLoading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {productsData.map((product) => (
+            <Link to={`/product/${product._id}`} key={product._id}>
+              <RelatedProducts data={product} />
+            </Link>
+          ))}
+        </div>
+      )}
+    </section>
+
+    {/* Pagination */}
+    {totalPages > 1 && (
+      <div
+        className={`flex justify-center mt-8 ${
+          isFetching || isLoading ? "opacity-50 pointer-events-none" : ""
+        }`}
+      >
+        <div className="space-x-4 flex items-center">
+          <button
+            className="border-2 rounded-2xl p-2 cursor-pointer bg-green-500 text-white"
+            onClick={() => setCurrentPage((old) => Math.max(old - 1, 0))}
+            disabled={currentPage === 0}
+          >
+            Previous Page
+          </button>
+          <span>
+            Current Page: {currentPage + 1}/{totalPages}
+          </span>
+          <button
+            className="border-2 rounded-2xl p-2 cursor-pointer bg-green-500 text-white"
+            onClick={() =>
+              setCurrentPage((old) =>
+                old + 1 < totalPages ? old + 1 : old
+              )
+            }
+            disabled={
+              currentPage + 1 >= totalPages || isLoading || isFetching
+            }
+          >
+            {isLoading || isFetching ? "loading.." : "Next Page"}
+          </button>
+        </div>
+      </div>
+    )}
+  </main>
+</div>
+
   );
 };
 

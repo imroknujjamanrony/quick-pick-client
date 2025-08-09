@@ -1,13 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { RouterProvider, } from "react-router-dom";
-import { router } from './Routes/Router';
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./Routes/Router";
+import "./index.css";
+import SearchProvider from "./providers/SearchProvider.jsX";
+import TanStackProvider from "./providers/TanStackProvider";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <div className='max-w-screen mx-auto overflow-x-hidden'>
-     <RouterProvider router={router} />
+
+    <div className="max-w-screen mx-auto overflow-x-hidden">
+      <TanStackProvider>
+        <SearchProvider>
+          <RouterProvider router={router} />
+        </SearchProvider>
+      </TanStackProvider>
     </div>
-  </StrictMode>,
-)
+  </StrictMode>
+);
