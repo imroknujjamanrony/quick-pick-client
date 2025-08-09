@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { SearchContext } from "../providers/SearchProvider";
+import { div } from "framer-motion/client";
 
 const PriceFilterWidget = ({ setFilterOption }) => {
   // State variables
@@ -79,6 +80,7 @@ const PriceFilterWidget = ({ setFilterOption }) => {
   };
 
   return (
+    
     <form
       className="w-64 bg-white p-4 font-sans text-sm text-gray-800"
       onSubmit={handleSubmit}

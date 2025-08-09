@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar, FaRegStar, FaPaypal } from "react-icons/fa";
 import {
   AiOutlineHeart,
@@ -10,145 +10,69 @@ import {
 } from "react-icons/ai";
 import ReactStars from "react-rating-stars-component";
 import RelatedProducts from "../../components/RelatedProducts";
-import Carousel from "../../components/ImageSlider";
+import Carousel from "../../components/ImageSlider.jsx";
 import { useParams } from "react-router";
+import axiosI from "../../utils/axiosInstance.js";
+import { useQuery } from "@tanstack/react-query";
+import { useProducts } from "../../hooks/useProduct.js";
+import { Link } from "react-router-dom";
 
-const productDetails = {
-  productName: "Marketside Fresh Organic Bananas, Bunch",
-  productImage: [
-    {
-      img: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212758/pngtree-one-banana-isolated-on-transparent-background-png-image_2414234_ayzgfh.jpg",
-    },
-    {
-      img: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/images_tdjuaa.jpg",
-    },
-    {
-      img: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    },
-    {
-      img: "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/pngtree-a-peeled-giant-banana-image_1201052_tbnjen.jpg",
-    },
-  ],
-  rattings: 5.0,
-  review: 2,
-  sku: "EIUDBGIOD",
-  price: 0.89,
-  oldPrice: 1.99,
-  description:
-    "lorem50 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. lorem50 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  reviews: [
-    {
-      name: "John Doe",
-      comment: "Great bananas! Fresh and tasty.",
-    },
-    {
-      name: "Jane Smith",
-      comment: "Good quality but a bit pricey.",
-    },
-  ],
-  type: "ORGANIC",
-  offer: "56%",
+const fetchProduct = async (id) => {
+  const { data } = await axiosI.get(`/product/${id}`);
+  return data.data;
 };
 
-const related = [
-  {
-    id: 1,
-    name: "Large Garden Spinach & Herb Wrap Tortillas - 15oz 6ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212758/pngtree-one-banana-isolated-on-transparent-background-png-image_2414234_ayzgfh.jpg",
-    price: 27.9,
-    oldPrice: 32.9,
-    discount: 16,
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: "Organic Whole Wheat Tortillas - 12oz 8ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 24.5,
-    oldPrice: 29.99,
-    discount: 18,
-    inStock: true,
-  },
-  {
-    id: 3,
-    name: "Gluten-Free Almond Flour Wraps - 10oz 5ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 31.75,
-    oldPrice: 35.5,
-    discount: 11,
-    inStock: false,
-  },
-  {
-    id: 4,
-    name: "Jalapeño & Cheddar Flavored Tortillas - 14oz 6ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 26.25,
-    oldPrice: null,
-    discount: 0,
-    inStock: true,
-  },
-  {
-    id: 5,
-    name: "Sun-Dried Tomato & Basil Wraps - 13oz 7ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 28.99,
-    oldPrice: 34.2,
-    discount: 15,
-    inStock: true,
-  },
-  {
-    id: 6,
-    name: "Low-Carb Keto Friendly Tortillas - 9oz 10ct",
-    image:
-      "https://res.cloudinary.com/ds4hwq3hb/image/upload/v1754212757/download_dfrwej.jpg",
-    price: 35.4,
-    oldPrice: 39.99,
-    discount: 12,
-    inStock: true,
-  },
-];
-
 const DetailsPage = () => {
-  const { id } = useParams();
-  console.log(id);
-
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const { id } = useParams();
+
+  const {
+    data: productDetails,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => fetchProduct(id),
+    enabled: !!id,
+  });
+
+  // console.log(productDetails);
+
+  const { data: related } = useProducts({
+    searchValue: productDetails?.productname,
+  });
+  // console.log(related);
+
+  if (isLoading) return <div>loading</div>;
 
   const increaseQty = () => setQuantity((q) => q + 1);
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   return (
-    <div className="px-4 py-8 w-full md:w-[80%] mx-auto">
+    <div className="px-4 py-8 w-full md:w-[80%] lg:w-[80%] mx-auto">
       {/* Top Section */}
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left - Image Slider */}
         <div className="w-full lg:w-[45%]">
           <Carousel
-            carouselItems={productDetails?.productImage}
-            type={productDetails?.type}
+            carouselItems={productDetails?.images}
+            isOrganic={productDetails?.isOrganic}
             offer={productDetails?.offer}
           />
         </div>
 
         {/* Right - Details */}
         <div className="w-full lg:w-[55%]">
-          <h1 className="text-2xl font-bold">
-            {productDetails.productName}
-          </h1>
+          <h1 className="text-2xl font-bold">{productDetails.productname}</h1>
 
           {/* Rating */}
           <div className="flex flex-wrap items-center gap-2 mt-2">
-            <ReactStars
+            {/* <ReactStars
               count={productDetails?.rattings}
               size={24}
               activeColor="#ffd700"
-            />
+            /> */}
             <span className="flex">
               <AiOutlineStar />
               <AiOutlineStar />
@@ -156,28 +80,37 @@ const DetailsPage = () => {
               <AiOutlineStar />
               <AiOutlineStar />
             </span>
-            <span className="text-sm text-gray-500 border-gray-200 border-2 p-[2px] rounded-md font-semibold">
-              {productDetails?.rattings.toFixed(2)}
-            </span>
+            {productDetails?.rattings && (
+              <span className="text-sm text-gray-500 border-gray-200 border-2 p-[2px] rounded-md font-semibold">
+                {productDetails?.rattings.toFixed(2)}
+              </span>
+            )}
 
-            <span className="text-sm text-gray-500">
-              {productDetails?.review} reviews
-            </span>
+            {productDetails?.review && (
+              <span className="text-sm text-gray-500">
+                {productDetails?.review} reviews
+              </span>
+            )}
             <span className="hidden sm:inline-block text-sm text-gray-500 border-r-2 border-slate-300 h-5"></span>
             <p className="hidden sm:block">
               <span className="text-gray-500">SKU: </span>
               <span className="">{productDetails?.sku}</span>
             </p>
           </div>
+          <div className="mt-2 text-sm text-gray-600">
+            <p>{productDetails?.title}</p>
+          </div>
 
           {/* Price */}
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-2 flex items-center gap-3">
             <span className="text-red-500 text-2xl sm:text-3xl font-bold">
               ${productDetails?.price}
             </span>
-            <span className="line-through text-gray-400">
-              ${productDetails?.oldPrice}
-            </span>
+            {productDetails?.oldPrice && (
+              <span className="line-through text-gray-400">
+                ${productDetails?.oldPrice}
+              </span>
+            )}
           </div>
 
           <button className="bg-[#16a34a] text-white px-4 py-2 mt-3 rounded-lg font-semibold cursor-pointer hover:bg-[#138a3d] transition-colors">
@@ -301,16 +234,18 @@ const DetailsPage = () => {
           >
             Description
           </button>
-          <button
-            onClick={() => setActiveTab("reviews")}
-            className={`pb-2 font-medium cursor-pointer ${
-              activeTab === "reviews"
-                ? "border-b-2 border-black"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            Reviews ({productDetails?.reviews.length})
-          </button>
+          {productDetails?.reviews && (
+            <button
+              onClick={() => setActiveTab("reviews")}
+              className={`pb-2 font-medium cursor-pointer ${
+                activeTab === "reviews"
+                  ? "border-b-2 border-black"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Reviews ({productDetails?.reviews?.length})
+            </button>
+          )}
         </div>
       </div>
 
@@ -336,15 +271,18 @@ const DetailsPage = () => {
         )}
       </div>
 
-      {/* Related Products */}
-      <div className="mt-10">
-        <h2 className="text-lg font-bold mb-4">Related products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {related.map((product) => (
-            <RelatedProducts key={product.id} data={product} />
-          ))}
+      {related?.data && (
+        <div className="mt-10">
+          <h2 className="text-lg font-bold mb-4">Related products</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {related?.data?.products.map((product) => (
+              <Link key={product?._id} to={`/product/${product?._id}`}>
+                <RelatedProducts key={product?._id} data={product} />
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

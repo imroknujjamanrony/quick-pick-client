@@ -4,6 +4,11 @@ export const fetchProduct = async (filters = {}) => {
   const response = await axiosI.get("/products", {
     params: filters,
   });
-// console.log(response)
   return response.data;
+};
+
+export const fetchSingleProduct = async (id) => {
+  const response = await axiosI.get(`/product/${id}`);
+  console.log("fetchSingleProduct", id);
+  return response.data; 
 };
