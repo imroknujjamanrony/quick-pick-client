@@ -1,21 +1,23 @@
 import { createBrowserRouter } from "react-router-dom";
+// Imports from both branches
+
 import MainLayout from "../Layouts/MainLayout/MainLayout";
 import Home from "../Pages/Home/Home";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
-
-// Imports from both branches
 import Register from "../Pages/Register";
 import Login from "../Pages/Login";
 import Contact from "../Pages/Contact/Contact";
 import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import Blogs from "../Pages/Blogs/Blogs.jsx";
+import AuthTab from "../Components/AuthTab.jsx";
+
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-    errorElement: <ErrorPage></ErrorPage>,
+    // errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -49,12 +51,18 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "/products/:id",
+        path: "/product/:id",
         element: <DetailsPage />,
+
       },
+
       {
         path: "/filter-products",
         element: <FilterProductPage />,
+      },
+      {
+        path: "/tabs",
+        element: <AuthTab></AuthTab>,
       },
       {
         path: "*",

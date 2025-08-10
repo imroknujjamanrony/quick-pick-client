@@ -1,72 +1,76 @@
 // RelatedProducts.js
-import React from "react";
 import { AiOutlineStar } from "react-icons/ai";
-import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
-import ReactStars from "react-rating-stars-component";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const RelatedProducts = ({ data }) => {
-  const { name, image, price, oldPrice, discount, inStock } = data;
+  const {
+    productname,
+    images = [],
+    price,
+    title,
+    quantity,
+    isOrganic,
+    seller,
+    _id,
+  } = data;
+
+  const image = images[0] || "/placeholder.jpg";
+  const inStock = parseInt(quantity) > 0;
 
   return (
-    <div className="bg-white border border-gray-200">
+    <div className="bg-white border w-auto border-gray-200 rounded-md shadow-sm">
       {/*  Image */}
-      <div className="relative">
-        <img src={image} alt={name} className="w-full object-fill h-48" />
-
-        {/* Discount  */}
-        {discount > 0 && (
-          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full absolute top-2 left-2">
-            {discount}%
-          </span>
-        )}
+      <div className="w-full relative">
+        <img
+          src={image}
+          alt={productname}
+          className="w-full h-48 object-cover"
+        />
 
         {/* Wishlist Button */}
         <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
           <FaHeart className="text-gray-600" />
         </button>
+        {/* Organic tag */}
+        {isOrganic == "true" && (
+          <span className="text-gray-200 text-xs font-semibold mb-4 absolute bottom-0 ml-4  rounded-3xl p-2 bg-green-600 ">
+            ✅ Organic
+          </span>
+        )}
       </div>
 
-      {/* Product name */}
+      {/* Product details */}
       <div className="p-4">
-        <h3 className="text-sm font-semibold text-gray-800 mb-2 ">{name}</h3>
+        <h3 className="text-sm font-semibold text-gray-800 mb-1">
+          {productname}
+        </h3>
 
-        {/* Rating */}
+        {/* Rating (Static) */}
         <div className="flex items-center mb-2">
-          {/* <ReactStars
-            count={5}
-            size={18}
-            value={3}
-            edit={false}
-            activeColor="#ffd700"
-          /> */}
-          <span className="flex">
+          <span className="flex text-yellow-400">
+            <AiOutlineStar />
             <AiOutlineStar />
             <AiOutlineStar />
             <AiOutlineStar />
             <AiOutlineStar />
           </span>
-          <span className="text-xs text-gray-500 ml-1">(3.0)</span>
+          <span className="text-xs text-gray-500 ml-1">(4.0)</span>
         </div>
 
         {/* Price */}
         <div className="flex items-center mb-3">
           <span className="text-lg font-bold text-gray-900">
-            ${price.toFixed(2)}
+            ${parseFloat(price).toFixed(2)}
           </span>
-          {oldPrice && (
-            <span className="text-sm text-gray-500 line-through ml-2">
-              ${oldPrice.toFixed(2)}
-            </span>
-          )}
         </div>
 
-        <div className="flex items-center gap-5">
-          {/* Add to Cart Button */}
+        {/* Buttons and stock */}
+        <div className="flex items-center gap-4">
           <button
-            className={`py-2 px-4 rounded-md flex items-center justify-center  cursor-pointer
-            ${
+            className={`py-2 px-4 rounded-md flex items-center justify-center text-sm ${
               inStock
-                ? "bg-green-600  text-white"
+                ? "bg-green-600 text-white"
                 : "bg-gray-300 text-gray-600 cursor-not-allowed"
             }`}
             disabled={!inStock}
@@ -74,9 +78,8 @@ const RelatedProducts = ({ data }) => {
             <FaShoppingCart className="mr-2" />
           </button>
 
-          {/* Stock Status */}
           <p
-            className={`text-xs font-medium mb-3 text-center ${
+            className={`text-xs font-medium ${
               inStock ? "text-green-600" : "text-red-600"
             }`}
           >
