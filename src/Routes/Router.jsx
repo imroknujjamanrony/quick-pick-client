@@ -9,6 +9,7 @@ import Login from "../Pages/Login";
 import Contact from "../Pages/Contact/Contact";
 import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
+import Blogs from "../Pages/Blogs/Blogs.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,21 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login></Login>,
       },
+   
+  {
+  path: "/blogs",
+  element: <Blogs></Blogs>,
+  loader: async () => {
+    const blogsRes = await fetch('http://localhost:5000/jinStoreBlogsCollection');
+    const countRes = await fetch('http://localhost:5000/blogsCollectionCount');
+
+    const blogs = await blogsRes.json();
+    const count = await countRes.json();
+
+    return { blogs, count };
+  }
+},
+
       {
         path: "/contact",
         element: <Contact />,
