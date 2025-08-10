@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
+// Imports from both branches
+
 import MainLayout from "../Layouts/MainLayout/MainLayout";
 import Home from "../Pages/Home/Home";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
-
-// Imports from both branches
 import Register from "../Pages/Register";
 import Login from "../Pages/Login";
 import Contact from "../Pages/Contact/Contact";
