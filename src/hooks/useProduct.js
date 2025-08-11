@@ -19,3 +19,24 @@ export const useSingleProduct = (id) => {
     queryFn: () => fetchSingleProduct(id),
   });
 };
+
+
+
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { uploadProduct } from "../services/productService.js";
+
+export const useUploadProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(uploadProduct, {
+    onSuccess: () => {
+      // After successful upload, refetch product list to update UI
+      queryClient.invalidateQueries(["products"]);
+    },
+    onError: (error) => {
+      console.error("Upload product failed:", error);
+    },
+  });
+};
+

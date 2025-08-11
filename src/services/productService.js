@@ -12,3 +12,10 @@ export const fetchSingleProduct = async (id) => {
   console.log("fetchSingleProduct", id);
   return response.data; 
 };
+
+
+// productService.js
+export const uploadProduct = async (productData) => {
+  const response = await axiosI.post("/products", productData);
+  return response.data;
+};

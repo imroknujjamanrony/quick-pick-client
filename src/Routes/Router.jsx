@@ -10,7 +10,7 @@ import Contact from "../Pages/Contact/Contact";
 import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import AuthTab from "../Components/AuthTab.jsx";
-
+import AddProduct from "../components/AddProduct.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <DetailsPage />,
-
+      },
+      {
+        path: "/add-product",
+        element: <AddProduct />,
       },
 
       {

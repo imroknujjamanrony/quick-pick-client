@@ -28,9 +28,9 @@ const FilterProductPage = () => {
   const totalItems = data?.data?.total || 0;
 
   return (
-    <div className="flex flex-col md:flex-row md:w-[80%] mx-auto">
+    <div className="flex flex-col md:flex-row md:w-[80%] mx-auto justify-between">
   {/* Sidebar Filter - Desktop */}
-  <aside className="hidden md:block md:w-64 flex-shrink-0 p-4 bg-white border-gray-200">
+  <aside className="hidden md:block md:w-64 flex-shrink-0 p-4 bg-white">
     <PriceFilterWidget
       setFilterOption={setFilterOption}
       currentPage={currentPage}
@@ -63,7 +63,7 @@ const FilterProductPage = () => {
   )}
 
   {/* Main Content */}
-  <main className="flex-1 p-4">
+  <main className="p-4 w-[95%] mx-auto">
     {/* Mobile Filter Button */}
     <button
       onClick={() => setMobileFilterOpen(true)}
