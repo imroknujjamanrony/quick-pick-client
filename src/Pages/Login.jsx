@@ -2,19 +2,49 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../providers/AuthContext";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 
 const Login = () => {
   const {signInUser } = useContext(AuthContext)
+  const location = useLocation();
+
 const navigate = useNavigate();
+const from = location.state?.from?.pathname || '/'
 const {
     register,
     handleSubmit,
     
     formState: { errors },
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) =>
+  {
+    console.log(data)
+ signInUser(data.email , data.password)
+ .then(result => {
+  const user = result.user
+  console.log(user);
+  Swal.fire({
+          title: "User Log in Successfully",
+          showClass: {
+            popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `
+          },
+          hideClass: {
+            popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `
+          }
+        });
+  navigate(from , { replace:true});
+ })
+  }
 
 
     return (
