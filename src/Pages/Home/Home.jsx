@@ -94,7 +94,7 @@ const Home = () => {
         }
       ];
     return (
-        <div className='lg:w-[1380px] mx-auto px-2'>
+        <div className='lg:w-[80%] mx-auto px-2'>
             <HeroSection></HeroSection>
             <FeaturesSection></FeaturesSection>
             <PromoBannerSection></PromoBannerSection>

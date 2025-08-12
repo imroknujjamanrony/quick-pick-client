@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-100 text-gray-700 text-sm">
       {/* Newsletter */}
-      <div className="max-w-7xl mx-auto px-4 py-8 border-b">
+      <div className="max-w-[80%] mx-auto px-4 py-8 border-b">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h3 className="text-2xl font-bold">Join our newsletter for £10 offs</h3>
@@ -36,7 +36,7 @@ export default function Footer() {
       </div>
 
       {/* Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-5 gap-8 border-b">
+      <div className="max-w-[80%] mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-5 gap-8 border-b">
         {/* Help */}
         <div>
           <h4 className="text-xl font-bold mb-3">Do You Need Help?</h4>
@@ -113,7 +113,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom */}
-      <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+      <div className="max-w-[80%] mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <p>
           Copyright © 2024 © Jinstore WooCommerce WordPress Theme. All rights reserved.
           Powered by <a href="#" className="text-purple-600">BlackRise Themes</a>.
