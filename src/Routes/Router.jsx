@@ -11,6 +11,8 @@ import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import Blogs from "../Pages/Blogs/Blogs.jsx";
 import AuthTab from "../Components/AuthTab.jsx";
+import CartPage from "../Pages/Cart/Cart.jsx";
+import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
 
 
 export const router = createBrowserRouter([
@@ -68,6 +70,14 @@ export const router = createBrowserRouter([
         path: "*",
         element: <ErrorPage />,
       },
+      {
+        path: "/cart",
+        element: <CartPage></CartPage>,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutPage />,
+      }
     ],
   },
 ]);
