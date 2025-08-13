@@ -29,7 +29,12 @@ export const updateProduct = async (id, productData) => {
   return response.data;
 };
 
-export const deleteProductImage = async (id, indx) => {
-  const response = await axiosI.patch(`/productImage/${id}/${indx}`);
+export const deleteProductImage = async (id) => {
+  const response = await axiosI.patch(`/productImage/${id}`);
+  return response.data;
+};
+
+export const updateProductImage = async (id, updatedData) => {
+  const response = await axiosI.patch(`/productImage/${id}`, updatedData);
   return response.data;
 };

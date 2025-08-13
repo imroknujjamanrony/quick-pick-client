@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { FaTimes, FaTrash } from "react-icons/fa";
-import { useDeleteProductImage } from "../../hooks/useUpdateProduct";
+import { FaTrash } from "react-icons/fa";
+import { useLocation } from "react-router";
 
 const categories = [
   "Fruits & Vegetables",
@@ -23,9 +23,11 @@ export default function ProductForm({
   isPending,
   data,
   handleDeleteImage,
+  handleUpdatePhoto,
+  updateImagePending,
 }) {
-  const [previewImages, setPreviewImages] = useState([]);
-  const [existingImages, setExistingImages] = useState(data?.images || []);
+  const [images, setImages] = useState([]);
+  const { pathname } = useLocation();
 
   const {
     register,
@@ -34,22 +36,22 @@ export default function ProductForm({
     reset,
   } = useForm();
 
-
+  // Populate form when editing or reset when adding
   useEffect(() => {
     if (data) {
       reset({
-        productname: data.productname,
-        title: data.title,
-        sku: data.sku,
-        description: data.description,
-        category: data.category,
-        brand: data.brand,
-        price: data.price,
-        quantity: data.quantity,
-        seller: data.seller,
+        productname: data.productname || "",
+        title: data.title || "",
+        sku: data.sku || "",
+        description: data.description || "",
+        category: data.category || "",
+        brand: data.brand || "",
+        price: data.price || "",
+        quantity: data.quantity || "",
+        seller: data.seller || "",
         isOrganic: data.isOrganic || false,
       });
-      setExistingImages(data.images || []);
+      setImages(data.images || []); // images from DB as URLs
     } else {
       reset({
         productname: "",
@@ -63,43 +65,60 @@ export default function ProductForm({
         seller: "",
         isOrganic: false,
       });
-      setExistingImages([]);
+      setImages([]);
     }
   }, [data, reset]);
 
-
+  // Handle adding new images
   const handleImageChange = (e) => {
-    const addImageFiles = Array.from(e.target.files);
+    const newFiles = Array.from(e.target.files);
+    const totalImages = [...images, ...newFiles];
 
-    if (addImageFiles.length + existingImages.length > 5) {
-      toast.error("You can only upload up to 5 images in total.");
-      e.target.value = "";
-      setPreviewImages([]);
+    if (totalImages.length > 5) {
+      toast.error("You can only upload up to 5 images.");
+      setImages([]);
+
       return;
     }
-    setPreviewImages(addImageFiles);
+
+    setImages(totalImages);
+
+    // For edit mode, trigger backend update for images
+    if (data) {
+      handleUpdatePhoto(newFiles);
+    }
   };
 
+  // Remove specific image by index
+  const removeImage = (index) => {
+    const updated = images.filter((_, i) => i !== index);
+    setImages(updated);
 
+    // For DB image deletion
+    if (data && typeof images[index] === "string") {
+      handleDeleteImage(images[index]); // pass image URL or ID
+    }
+  };
+
+  // Submit form
   const handleFormSubmit = async (formData) => {
-    if (previewImages.length === 0 && existingImages.length === 0) {
-      alert("Please select at least one image.");
+    if (images.length === 0) {
+      toast.error("Please select at least one image.");
       return;
     }
 
     let submissionData = new FormData();
-
     for (const key in formData) {
       submissionData.append(key, formData[key]);
     }
 
-    previewImages.forEach((file) => {
-      submissionData.append("images", file);
-    });
-
-    existingImages.forEach((url) => {
-      submissionData.append("existingImages", url);
-    });
+    if (pathname.includes("/add-product")) {
+      images.forEach((img) => {
+        if (img instanceof File) {
+          submissionData.append("images", img);
+        }
+      });
+    }
 
     onSubmit(submissionData);
   };
@@ -115,88 +134,64 @@ export default function ProductForm({
 
       {/* Product Name */}
       <div>
-        <label
-          className="block text-gray-700 font-semibold mb-2"
-          htmlFor="productname"
-        >
+        <label className="block text-gray-700 font-semibold mb-2">
           Product Name <span className="text-red-500">*</span>
         </label>
         <input
-          id="productname"
           {...register("productname", { required: "Product name is required" })}
           placeholder="Awesome Organic Apples"
-          className={`w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900 ${
-            errors.productname ? "border-red-500" : ""
+          className={`w-full rounded-md border px-4 py-3 ${
+            errors.productname ? "border-red-500" : "border-gray-500"
           }`}
         />
         {errors.productname && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.productname.message}
-          </p>
+          <p className="text-red-500 text-sm">{errors.productname.message}</p>
         )}
       </div>
 
       {/* Title */}
       <div>
-        <label
-          className="block text-gray-700 font-semibold mb-2"
-          htmlFor="title"
-        >
-          Title
-        </label>
+        <label className="block text-gray-700 font-semibold mb-2">Title</label>
         <input
-          id="title"
           {...register("title")}
           placeholder="Best fresh apples 2025"
-          className="w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900"
+          className="w-full rounded-md border border-gray-500 px-4 py-3"
         />
       </div>
 
       {/* SKU */}
       <div>
-        <label className="block text-gray-700 font-semibold mb-2" htmlFor="sku">
-          SKU
-        </label>
+        <label className="block text-gray-700 font-semibold mb-2">SKU</label>
         <input
-          id="sku"
           {...register("sku")}
           placeholder="SKU12345"
-          className="w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900"
+          className="w-full rounded-md border border-gray-500 px-4 py-3"
         />
       </div>
 
       {/* Description */}
       <div>
-        <label
-          className="block text-gray-700 font-semibold mb-2"
-          htmlFor="description"
-        >
+        <label className="block text-gray-700 font-semibold mb-2">
           Description
         </label>
         <textarea
-          id="description"
           {...register("description")}
-          placeholder="Fresh, juicy, and organically grown apples from our farms."
-          rows={6}
-          className="w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900 resize-none"
+          placeholder="Fresh, juicy, and organically grown apples."
+          rows={4}
+          className="w-full rounded-md border border-gray-500 px-4 py-3 resize-none"
         />
       </div>
 
-      {/* Category dropdown */}
+      {/* Category */}
       <div>
-        <label
-          className="block text-gray-700 font-semibold mb-2"
-          htmlFor="category"
-        >
+        <label className="block text-gray-700 font-semibold mb-2">
           Category
         </label>
         <select
-          defaultValue={data?.category}
-          id="category"
           {...register("category")}
-          className="w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900"
+          className="w-full rounded-md border border-gray-500 px-4 py-3"
         >
-          <option disabled>Select a category</option>
+          <option value="">Select a category</option>
           {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
@@ -207,177 +202,175 @@ export default function ProductForm({
 
       {/* Brand */}
       <div>
-        <label
-          className="block text-gray-700 font-semibold mb-2"
-          htmlFor="brand"
-        >
-          Brand
-        </label>
+        <label className="block text-gray-700 font-semibold mb-2">Brand</label>
         <input
-          id="brand"
           {...register("brand")}
           placeholder="Farm Fresh"
-          className="w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900"
+          className="w-full rounded-md border border-gray-500 px-4 py-3"
         />
       </div>
 
-      {/* Price and Quantity */}
+      {/* Price & Quantity */}
       <div className="flex gap-6">
         <div className="flex-1">
-          <label
-            className="block text-gray-700 font-semibold mb-2"
-            htmlFor="price"
-          >
+          <label className="block text-gray-700 font-semibold mb-2">
             Price ($) <span className="text-red-500">*</span>
           </label>
           <input
-            id="price"
             type="number"
             step="0.01"
             {...register("price", {
               required: "Price is required",
               min: { value: 0, message: "Price cannot be negative" },
             })}
-            placeholder="19.99"
-            className={`w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900 ${
-              errors.price ? "border-red-500" : ""
+            className={`w-full rounded-md border px-4 py-3 ${
+              errors.price ? "border-red-500" : "border-gray-500"
             }`}
           />
           {errors.price && (
-            <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+            <p className="text-red-500 text-sm">{errors.price.message}</p>
           )}
         </div>
 
         <div className="flex-1">
-          <label
-            className="block text-gray-700 font-semibold mb-2"
-            htmlFor="quantity"
-          >
+          <label className="block text-gray-700 font-semibold mb-2">
             Quantity <span className="text-red-500">*</span>
           </label>
           <input
-            id="quantity"
             type="number"
             {...register("quantity", {
               required: "Quantity is required",
-              min: { value: 1, message: "Quantity must be at least 1" },
+              min: { value: 1, message: "Must be at least 1" },
             })}
-            placeholder="100"
-            className={`w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900 ${
-              errors.quantity ? "border-red-500" : ""
+            className={`w-full rounded-md border px-4 py-3 ${
+              errors.quantity ? "border-red-500" : "border-gray-500"
             }`}
           />
           {errors.quantity && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.quantity.message}
-            </p>
+            <p className="text-red-500 text-sm">{errors.quantity.message}</p>
           )}
         </div>
       </div>
 
       {/* Seller */}
       <div>
-        <label
-          className="block text-gray-700 font-semibold mb-2"
-          htmlFor="seller"
-        >
+        <label className="block text-gray-700 font-semibold mb-2">
           Seller <span className="text-red-500">*</span>
         </label>
         <input
-          id="seller"
           {...register("seller", { required: "Seller name is required" })}
           placeholder="John's Farm"
-          className={`w-full rounded-md border border-gray-500 px-4 py-3 text-gray-900 ${
-            errors.seller ? "border-red-500" : ""
+          className={`w-full rounded-md border px-4 py-3 ${
+            errors.seller ? "border-red-500" : "border-gray-500"
           }`}
         />
         {errors.seller && (
-          <p className="text-red-500 text-sm mt-1">{errors.seller.message}</p>
+          <p className="text-red-500 text-sm">{errors.seller.message}</p>
         )}
       </div>
 
       {/* isOrganic */}
-      <div className="flex items-center gap-3">
-        <input
-          id="isOrganic"
-          type="checkbox"
-          {...register("isOrganic")}
-          className="text-gray-300"
-        />
-        <label htmlFor="isOrganic" className="text-gray-700 font-semibold">
-          Organic Product
-        </label>
+      <div className="flex items-center gap-2">
+        <input type="checkbox" {...register("isOrganic")} />
+        <label className="text-gray-700 font-semibold">Organic Product</label>
       </div>
 
       {/* Image Upload */}
-      <div>
-        <label className="block text-gray-700 font-semibold mb-2">
-          Upload Images (max 5) <span className="text-red-500">*</span>
-        </label>
-        <input
-          id="image"
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={(e) => handleImageChange(e)}
-          className="mb-2 border-2"
-        />
+      {pathname.includes("/add-product") && (
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2">
+            Upload Images (max 5)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            className="border p-2"
+          />
 
-        {/* Image Previews from db */}
-        {existingImages?.length > 0 && data && (
-          <div className="flex flex-wrap gap-4 mt-4">
-            {existingImages?.map((pimage, index) => (
-              <div key={index} className="relative">
+          {/* Preview */}
+
+          <div className="flex flex-wrap gap-3 mt-3">
+            {images.map((image, index) => {
+              let previewSrc;
+              if (image instanceof File) {
+                previewSrc = URL.createObjectURL(image);
+              } else if (typeof image === "string") {
+                previewSrc = image;
+              }
+
+              return (
                 <img
                   key={index}
-                  src={pimage}
-                  alt={`Preview-${index}`}
-                  className="w-24 h-24 object-cover border rounded"
+                  src={previewSrc}
+                  alt="Preview"
+                  className="w-20 h-20 object-cover"
                 />
-                <button
-                  type="button"
-                  onClick={() => handleDeleteImage(index)}
-                  className="absolute top-0 right-0 mr-2 cursor-pointer mt-2 p-2  hover:bg-red-500 rounded-full "
-                >
-                  <FaTrash size={12} />
-                </button>
-              </div>
-            ))}
-
-            <div></div>
+              );
+            })}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Image Previews from selection */}
-        {previewImages?.length > 0 && (
-          <div className="flex flex-wrap gap-4 mt-4">
-            {previewImages?.map((pimage, index) => (
-              <div key={index} className="relative">
-                <img
-                  key={index}
-                  src={URL.createObjectURL(pimage)}
-                  alt={`Preview-${index}`}
-                  className="w-24 h-24 object-cover border rounded"
-                />
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute top-0 right-0 mr-2 cursor-pointer mt-2 p-2"
-                >
-                  <FaTrash size={12} />
-                </button>
+      {/* Image update */}
+      {pathname.includes("/admin-product-edit/") && (
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2">
+            Update Images (max 5)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            className="border p-2"
+          />
+
+          {/* Preview */}
+          <div className="">
+            {updateImagePending ? (
+              "loading"
+            ) : (
+              <div className="flex flex-wrap gap-3 mt-3">
+                {images?.map((image, index) => {
+                  let previewSrc = "";
+                  if (image instanceof File) {
+                    previewSrc = URL.createObjectURL(image);
+                  } else if (typeof image === "string") {
+                    previewSrc = image;
+                  }
+
+                  return (
+                    <div key={index} className="">
+                      <img
+                        src={previewSrc}
+                        alt="Preview"
+                        className="w-20 h-20 object-cover rounded"
+                      />
+                    </div>
+                  );
+                })}
+                {images?.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteImage()}
+                    className="bg-red-500 mt-3 text-white rounded-full p-4 cursor-pointer"
+                  >
+                    <FaTrash size={12} />
+                  </button>
+                )}
               </div>
-            ))}
-
-            <div></div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Submit Button */}
+      {/* Submit */}
       <button
         type="submit"
-        disabled={isPending}
-        className="w-full bg-purple-600 hover:bg-purple-700 transition text-white font-bold py-3 rounded-lg shadow-lg text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+        disabled={isPending || updateImagePending}
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg disabled:opacity-70"
       >
         {isPending ? "Saving..." : data ? "Update Product" : "Add Product"}
       </button>

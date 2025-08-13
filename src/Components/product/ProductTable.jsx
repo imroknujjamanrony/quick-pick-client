@@ -20,7 +20,7 @@ export default function ProductTable({
 
   const handleEdit = (product) => {
     console.log("Edit:", product);
-    navigate(`/admin-product/${product?._id}`);
+    navigate(`/admin-product-edit/${product?._id}`);
 
     // Open edit modal or navigate to edit page
   };
