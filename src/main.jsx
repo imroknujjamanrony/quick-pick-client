@@ -5,15 +5,18 @@ import { router } from "./Routes/Router";
 import "./index.css";
 import SearchProvider from "./providers/SearchProvider.jsX";
 import TanStackProvider from "./providers/TanStackProvider";
+import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+
     <div className="max-w-screen mx-auto overflow-x-hidden">
       <TanStackProvider>
         <SearchProvider>
           <RouterProvider router={router} />
         </SearchProvider>
       </TanStackProvider>
+      <Toaster/>
     </div>
   </StrictMode>
 );

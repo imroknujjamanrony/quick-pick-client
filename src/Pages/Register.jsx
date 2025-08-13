@@ -1,22 +1,53 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../providers/AuthContext";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { createUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (data) => {
+    console.log(data);
+    createUser(data.email, data.password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "User Created Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message,
+        });
+      });
+  };
+
   return (
     <div>
-      <p className="text-sm mb-4   ">
-        There are many advantages to creating an account the payment process is
-        faster,shipment,tracking is possible and much more.
+      <p className="text-sm mb-4">
+        There are many advantages to creating an account: faster payment
+        process, shipment tracking, and much more.
       </p>
-      <div className="card bg-base-100  max-w-sm shrink-0 shadow-2xl">
+      <div className="card bg-base-100 max-w-sm shrink-0 shadow-2xl">
         <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-          {/* Name  */}
+          {/* Username */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Username</span>
@@ -32,7 +63,7 @@ const Register = () => {
             )}
           </div>
 
-          {/* Email  */}
+          {/* Email */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email address</span>
@@ -53,7 +84,8 @@ const Register = () => {
               <span className="text-red-600">Invalid email address</span>
             )}
           </div>
-          {/* Password  */}
+
+          {/* Password */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Password</span>
@@ -82,15 +114,27 @@ const Register = () => {
               </span>
             )}
           </div>
+
+          {/* Role Selection */}
           <div className="flex gap-2">
-            <input type="radio" name="radio-1" defaultChecked />
+            <input
+              type="radio"
+              value="customer"
+              {...register("role", { required: true })}
+              defaultChecked
+            />
             <p>I am a customer</p>
           </div>
           <div className="flex gap-2">
-            <input type="radio" name="radio-1" />
+            <input
+              type="radio"
+              value="vendor"
+              {...register("role", { required: true })}
+            />
             <p>I am a vendor</p>
           </div>
 
+          {/* Submit */}
           <div className="form-control mt-6 text-center">
             <input
               className="btn bg-[#634c95] text-white w-full"

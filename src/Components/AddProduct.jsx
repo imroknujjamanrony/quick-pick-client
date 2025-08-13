@@ -1,29 +1,22 @@
-import { data } from "framer-motion/client";
-import ProductForm from "./product/ProducttForm";
-import RelatedProducts from "./RelatedProducts";
-import { useState } from "react";
+import ProductForm from "./product/ProductForm";
 import { useAddProduct } from "../hooks/useAddProduct";
+import { useNavigate } from "react-router";
 
 export default function AddProductPage() {
-  const [prod, setPord] = useState([]);
   const { mutate, isPending, isSuccess } = useAddProduct();
   const handleAddProduct = (data) => {
     console.log("Form data:", data);
-    setPord(data);
-    // console.log(prod);
     mutate(data);
   };
 
-//   console.log(isPending) 
-//   console.log(isSuccess)
-
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center">
       <div>
-        <ProductForm onSubmit={handleAddProduct} />;
-      </div>
-      <div>
-        <RelatedProducts data={prod} />
+        <ProductForm
+          onSubmit={handleAddProduct}
+          isPending={isPending}
+          isSuccess={isSuccess}
+        />
       </div>
     </div>
   );

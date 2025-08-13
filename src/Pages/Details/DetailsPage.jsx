@@ -30,7 +30,6 @@ const DetailsPage = () => {
   const {
     data: productDetails,
     isLoading,
-    isError,
   } = useQuery({
     queryKey: ["product", id],
     queryFn: () => fetchProduct(id),

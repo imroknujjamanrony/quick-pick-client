@@ -2,6 +2,7 @@ import React from "react";
 
 const Notification = () => {
   return (
+    <div className="bg-[#634C9F] text-[12px] font-medium text-white md:flex lg:flex justify-around py-2 text-center">
     <div className="bg-[#634C9F] text-[12px] font-medium text-white flex justify-around py-2">
       <div>
         <h1>
@@ -23,6 +24,7 @@ const Notification = () => {
           sec.
         </h1>
       </div>
+    </div>
     </div>
   );
 };

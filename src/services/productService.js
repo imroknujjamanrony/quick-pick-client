@@ -10,12 +10,26 @@ export const fetchProduct = async (filters = {}) => {
 export const fetchSingleProduct = async (id) => {
   const response = await axiosI.get(`/product/${id}`);
   console.log("fetchSingleProduct", id);
-  return response.data; 
+  return response.data;
 };
-
 
 // productService.js
 export const uploadProduct = async (productData) => {
   const response = await axiosI.post("/products", productData);
+  return response.data;
+};
+
+export const deleteProduct = async (id) => {
+  const response = await axiosI.delete(`/product/${id}`);
+  return response.data;
+};
+
+export const updateProduct = async (id, productData) => {
+  const response = await axiosI.put(`/product/${id}`, productData);
+  return response.data;
+};
+
+export const deleteProductImage = async (id, indx) => {
+  const response = await axiosI.patch(`/productImage/${id}/${indx}`);
   return response.data;
 };
