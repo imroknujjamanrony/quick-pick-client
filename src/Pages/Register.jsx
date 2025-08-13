@@ -1,16 +1,39 @@
 
+import { useContext } from "react";
 import { useForm } from "react-hook-form"
+import { AuthContext } from "../providers/AuthContext";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 
   
 const Register = () => {
+  const navigate = useNavigate()
+  const {createUser} = useContext(AuthContext)
      const {
     register,
     handleSubmit,
     
     formState: { errors },
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => 
+ {
+     console.log(data)
+  createUser(data.email , data.password)
+  .then(result => {
+const loggedUser = result.user;
+console.log(loggedUser);
+Swal.fire({
+  position: "top-end",
+  icon: "success",
+  title: "User Created Successfully",
+  showConfirmButton: false,
+  timer: 1500
+});
+
+navigate('/')
+  })
+ }
     return (
         
        <div>
