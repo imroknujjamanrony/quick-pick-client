@@ -11,6 +11,7 @@ import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import Blogs from "../Pages/Blogs/Blogs.jsx";
 import AuthTab from "../Components/AuthTab.jsx";
+import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
 
 
 export const router = createBrowserRouter([
@@ -45,6 +46,14 @@ export const router = createBrowserRouter([
     return { blogs, count };
   }
 },
+
+{
+        path: "/blogs/:id",
+        element: <BlogsDetails></BlogsDetails>,
+        loader: ({params}) => fetch(`http://localhost:5000/jinStoreBlogsCollection/${params.id}`)
+
+      
+      },
 
       {
         path: "/contact",

@@ -2,7 +2,7 @@
 const SideCard = ({ blog }) => {
     const { image, title, date } = blog;
     return (
-        <div className="">
+        <div className="grid lg:grid-cols-1 gap-6">
             <div className="flex gap-2 mt-4">
                 <div>
                     <img className="w-[56px] h-[56px] rounded-full" src={image} alt="" />
