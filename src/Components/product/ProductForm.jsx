@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaTimes, FaTrash } from "react-icons/fa";
 import { useDeleteProductImage } from "../../hooks/useUpdateProduct";
@@ -18,10 +18,14 @@ const categories = [
   "Household Needs",
 ];
 
-export default function ProductForm({ onSubmit, isPending, data, refetch }) {
+export default function ProductForm({
+  onSubmit,
+  isPending,
+  data,
+  handleDeleteImage,
+}) {
   const [previewImages, setPreviewImages] = useState([]);
   const [existingImages, setExistingImages] = useState(data?.images || []);
-  const { mutate } = useDeleteProductImage(data?._id);
 
   const {
     register,
@@ -30,7 +34,6 @@ export default function ProductForm({ onSubmit, isPending, data, refetch }) {
     reset,
   } = useForm();
 
-  // console.log(existingImages);
 
   useEffect(() => {
     if (data) {
@@ -64,17 +67,6 @@ export default function ProductForm({ onSubmit, isPending, data, refetch }) {
     }
   }, [data, reset]);
 
-  // const handleImageChange = (e) => {
-  //   const selectedFiles = Array.from(e.target.files);
-
-  //   if (selectedFiles.length + newImages.length + existingImages.length > 5) {
-  //     toast.error("You can only have up to 5 images total!");
-  //     e.target.value = "";
-  //     return;
-  //   }
-
-  //   setNewImages([...newImages, ...selectedFiles]);
-  // };
 
   const handleImageChange = (e) => {
     const addImageFiles = Array.from(e.target.files);
@@ -88,23 +80,6 @@ export default function ProductForm({ onSubmit, isPending, data, refetch }) {
     setPreviewImages(addImageFiles);
   };
 
-  const handleDeleteImage = (index) => {
-    console.log(data?._id);
-    console.log(index);
-    if (data) {
-      mutate({ id: data?._id, indx: index });
-      // setExistingImages([])
-      refetch();
-      reset()
-    }
-  };
-  // const handleRemoveImage = (index) => {
-  //   const updatedImages = [...previewImages];
-  //   updatedImages.splice(index, 1);
-  //   setPreviewImages(updatedImages);
-  //   console.log(previewImages)
-  //   console.log(previewImages.length)
-  // };
 
   const handleFormSubmit = async (formData) => {
     if (previewImages.length === 0 && existingImages.length === 0) {
@@ -125,8 +100,6 @@ export default function ProductForm({ onSubmit, isPending, data, refetch }) {
     existingImages.forEach((url) => {
       submissionData.append("existingImages", url);
     });
-
-    console.log(submissionData);
 
     onSubmit(submissionData);
   };

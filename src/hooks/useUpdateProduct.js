@@ -25,7 +25,7 @@ export const useDeleteProductImage = (id) =>{
     mutationFn: ({ id, indx }) => deleteProductImage(id, indx),
     onSuccess: () => {
       toast.success("Product image deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["products", id] });
+      queryClient.invalidateQueries({ queryKey: ["product", id] });
     },
     onError: () => {
       toast.error("Error while deleting product image");

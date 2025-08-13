@@ -9,7 +9,7 @@ export const fetchProduct = async (filters = {}) => {
 
 export const fetchSingleProduct = async (id) => {
   const response = await axiosI.get(`/product/${id}`);
-  console.log("fetchSingleProduct", id);
+  // console.log("fetchSingleProduct", id);
   return response.data;
 };
 

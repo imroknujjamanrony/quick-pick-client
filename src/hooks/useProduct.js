@@ -17,7 +17,6 @@ export const useProducts = (filters = {}) => {
 };
 
 export const useSingleProduct = (id) => {
-  console.log("useSingleProduct", id);
   return useQuery({
     queryKey: ["product", id],
     queryFn: () => fetchSingleProduct(id),
@@ -45,7 +44,7 @@ export const useDeleteProduct = () => {
     mutationFn: (id) => deleteProduct(id),
     onSuccess: () => {
       toast.success("Deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["products",] });
     },
     onError: () => {
       toast.error("error while deleting a product");
