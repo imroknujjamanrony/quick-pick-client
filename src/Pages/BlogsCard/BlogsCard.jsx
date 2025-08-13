@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 
 const BlogsCard = ({ blog }) => {
-  const { image, title, date, categories, description, buttonText } = blog;
+  const { _id, image, title, date, categories, description, buttonText } = blog;
 
   return (
     <div>
@@ -20,9 +21,9 @@ const BlogsCard = ({ blog }) => {
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
-            <button className="rounded-lg bg-slate-800 px-4 sm:px-6 py-2 text-xs sm:text-sm md:text-base font-semibold text-white duration-300 hover:bg-slate-950">
+            <Link to={`/blogs/${_id}`}><button className="rounded-lg bg-slate-800 px-4 sm:px-6 py-2 text-xs sm:text-sm md:text-base font-semibold text-white duration-300 hover:bg-slate-950">
               Read More
-            </button>
+            </button></Link>
           </div>
         </div>
       </div>
