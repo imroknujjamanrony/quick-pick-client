@@ -1,5 +1,6 @@
 // SecondaryNavbar.jsx
 import { FaSearch, FaUser, FaHeart, FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function SecondaryNavbar() {
   return (
@@ -20,7 +21,7 @@ export default function SecondaryNavbar() {
           <li>Fruits &amp; Vegetables</li>
           <li>Beverages</li>
           <li>Blog</li>
-          <li>Contact</li>
+          <Link to="/contact"><li>Contact</li></Link>
         </ul>
 
         {/* Right Links */}

@@ -87,6 +87,14 @@ export const router = createBrowserRouter([
         path: "*",
         element: <ErrorPage />,
       },
+      {
+        path: "/cart",
+        element: <CartPage></CartPage>,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutPage />,
+      }
     ],
   },
 ]);

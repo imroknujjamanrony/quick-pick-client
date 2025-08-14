@@ -8,12 +8,9 @@ import {
   AiOutlineSwap,
   AiOutlineWarning,
 } from "react-icons/ai";
-import ReactStars from "react-rating-stars-component";
 import RelatedProducts from "../../components/RelatedProducts";
 import Carousel from "../../components/ImageSlider.jsx";
 import { useParams } from "react-router";
-import axiosI from "../../utils/axiosInstance.js";
-import { useQuery } from "@tanstack/react-query";
 import { useProducts, useSingleProduct } from "../../hooks/useProduct.js";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader/Loader.jsx";
@@ -32,13 +29,11 @@ const DetailsPage = () => {
 
   const { data: related, isFetching } = useProducts({
     searchValue: productDetails?.category?.[0],
-     page: currentPage + 1,
+    page: currentPage + 1,
     limit: 5,
   });
   const totalPages = related?.data?.totalPages || 1;
   const totalItems = related?.data?.total || 0;
-
-
 
   const increaseQty = () => setQuantity((q) => q + 1);
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
