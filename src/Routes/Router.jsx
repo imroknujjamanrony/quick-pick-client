@@ -54,6 +54,13 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: "/blogs/:id",
+        element: <BlogsDetails></BlogsDetails>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/jinStoreBlogsCollection/${params.id}`),
+      },
+
+      {
         path: "/contact",
         element: <Contact />,
       },
@@ -77,7 +84,6 @@ export const router = createBrowserRouter([
       {
         path: "/admin-product-edit/:id",
         element: <EditProduct />,
-
       },
       {
         path: "/tabs",
@@ -94,7 +100,7 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutPage />,
-      }
+      },
     ],
   },
 ]);
