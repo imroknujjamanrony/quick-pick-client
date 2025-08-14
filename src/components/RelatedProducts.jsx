@@ -12,7 +12,7 @@ const RelatedProducts = ({ data }) => {
     quantity,
     isOrganic,
     seller,
-    _id,
+    _id = '',
   } = data;
 
   const image = images[0] || "/placeholder.jpg";
