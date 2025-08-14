@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-// Imports from both branches
 
+// Layouts & Common Pages
 import MainLayout from "../Layouts/MainLayout/MainLayout";
 import Home from "../Pages/Home/Home";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
@@ -11,6 +11,10 @@ import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import Blogs from "../Pages/Blogs/Blogs.jsx";
 import AuthTab from "../Components/AuthTab.jsx";
+import PrivacyPolicy from "../Components/PrivacyPolicy.jsx";
+import UpdateToVendor from "../Pages/UpdateToVendor.jsx";
+
+// Extra Components from main
 import AddProduct from "../components/AddProduct.jsx";
 import ProductTable from "../components/product/ProductTable.jsx";
 import AdminProducts from "../components/product/Admin-Products.jsx";
@@ -22,30 +26,37 @@ import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout></MainLayout>,
-    // errorElement: <ErrorPage></ErrorPage>,
+    element: <MainLayout />,
     children: [
       {
         path: "/",
-        element: <Home></Home>,
+        element: <Home />,
       },
       {
         path: "/register",
-        element: <Register></Register>,
+        element: <Register />,
+      },
+      {
+        path: "/privacypolicy",
+        element: <PrivacyPolicy />,
       },
       {
         path: "/login",
-        element: <Login></Login>,
+        element: <Login />,
+      },
+      {
+        path: "/updatetovendor",
+        element: <UpdateToVendor />,
       },
       {
         path: "/blogs",
-        element: <Blogs></Blogs>,
+        element: <Blogs />,
         loader: async () => {
           const blogsRes = await fetch(
-            "http://localhost:5000/jinStoreBlogsCollection"
+            "https://quick-pick-server-zeta.vercel.app/jinStoreBlogsCollection"
           );
           const countRes = await fetch(
-            "http://localhost:5000/blogsCollectionCount"
+            "https://quick-pick-server-zeta.vercel.app/blogsCollectionCount"
           );
 
           const blogs = await blogsRes.json();
@@ -56,8 +67,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/blogs/:id",
-        element: <BlogsDetails></BlogsDetails>,
-        loader: ({params}) => fetch(`http://localhost:5000/jinStoreBlogsCollection/${params.id}`)
+        element: <BlogsDetails />,
+        loader: ({ params }) =>
+          fetch(
+            `https://quick-pick-server-zeta.vercel.app/jinStoreBlogsCollection/${params.id}`
+          ),
       },
       {
         path: "/contact",
@@ -85,7 +99,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/tabs",
-        element: <AuthTab></AuthTab>,
+        element: <AuthTab />,
       },
       {
         path: "*",
@@ -93,12 +107,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <CartPage></CartPage>,
+        element: <CartPage />,
       },
       {
         path: "/checkout",
         element: <CheckoutPage />,
-      }
+      },
     ],
   },
 ]);
