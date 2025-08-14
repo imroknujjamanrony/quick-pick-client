@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 import { useLocation } from "react-router";
+import Loader from "../loader/Loader";
 
 const categories = [
   "Fruits & Vegetables",
@@ -25,6 +26,7 @@ export default function ProductForm({
   handleDeleteImage,
   handleUpdatePhoto,
   updateImagePending,
+  pendingDeletePhoto,
 }) {
   const [images, setImages] = useState([]);
   const { pathname } = useLocation();
@@ -86,17 +88,6 @@ export default function ProductForm({
     // For edit mode, trigger backend update for images
     if (data) {
       handleUpdatePhoto(newFiles);
-    }
-  };
-
-  // Remove specific image by index
-  const removeImage = (index) => {
-    const updated = images.filter((_, i) => i !== index);
-    setImages(updated);
-
-    // For DB image deletion
-    if (data && typeof images[index] === "string") {
-      handleDeleteImage(images[index]); // pass image URL or ID
     }
   };
 
@@ -314,23 +305,28 @@ export default function ProductForm({
       )}
 
       {/* Image update */}
-      {pathname.includes("/admin-product-edit/") && (
+      {pathname?.includes("/admin-product-edit/") && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2">
-            Update Images (max 5)
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-            className="border p-2"
-          />
-
+          <div>
+            {images?.length <= 0 && (
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Update Images (max 5)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                  className="border p-2"
+                />
+              </div>
+            )}
+          </div>
           {/* Preview */}
           <div className="">
             {updateImagePending ? (
-              "loading"
+              <Loader />
             ) : (
               <div className="flex flex-wrap gap-3 mt-3">
                 {images?.map((image, index) => {
@@ -355,9 +351,9 @@ export default function ProductForm({
                   <button
                     type="button"
                     onClick={() => handleDeleteImage()}
-                    className="bg-red-500 mt-3 text-white rounded-full p-4 cursor-pointer"
+                    className="mt-3 text-red-500 rounded-full p-4 cursor-pointer"
                   >
-                    <FaTrash size={12} />
+                    <FaTrash size={30} />
                   </button>
                 )}
               </div>
@@ -372,7 +368,7 @@ export default function ProductForm({
         disabled={isPending || updateImagePending}
         className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg disabled:opacity-70"
       >
-        {isPending ? "Saving..." : data ? "Update Product" : "Add Product"}
+        {isPending ? <Loader /> : data ? "Update Product" : "Add Product"}
       </button>
     </form>
   );

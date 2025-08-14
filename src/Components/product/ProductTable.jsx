@@ -39,7 +39,9 @@ export default function ProductTable({
 
   return (
     <div className="overflow-x-auto">
-      <span className="text-2xl font-bold">total products : {totalItems}</span>
+      <div className="text-2xl font-bold mt-10 mb-5">
+        total products : {totalItems}
+      </div>
       <table className="w-full border border-gray-300 text-sm sm:text-base">
         <thead className="bg-gray-100">
           <tr>
@@ -58,7 +60,7 @@ export default function ProductTable({
         </thead>
         <tbody>
           {products?.map((product, index) => (
-            <tr key={product._id} className="hover:bg-gray-50">
+            <tr key={product._id} className="">
               <td className="border p-2">{index + 1}</td>
               <td className="border p-2">{product?.productname}</td>
               <td className="border p-2">{product?.sku}</td>

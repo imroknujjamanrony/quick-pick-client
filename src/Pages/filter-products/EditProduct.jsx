@@ -13,12 +13,13 @@ const EditProduct = () => {
   const { id } = useParams();
 
   const { data: productDetails, isLoading, refetch } = useSingleProduct(id);
-  const { mutate: deleteProductImage } = useDeleteProductImage(
-    productDetails?.data?._id
-  );
+  const { mutate: deleteProductImage, isPending: pendingDeletePhoto } =
+    useDeleteProductImage(productDetails?.data?._id);
 
-  const { mutate: updateProduct, isPending } = useUpdateProduct(id);
-  const { mutate: updateProductImage, isPending : updateImagePending } = useUpdateProductImage(id);
+  const { mutate: updateProduct, isPending: updateProductPending } =
+    useUpdateProduct(id);
+  const { mutate: updateProductImage, isPending: updateImagePending } =
+    useUpdateProductImage(id);
 
   const handleUpdate = (formData) => {
     updateProduct(formData);
@@ -39,20 +40,24 @@ const EditProduct = () => {
       }
     });
 
-    updateProductImage({ id: productDetails?.data?._id, updateData: submissionData });
+    updateProductImage({
+      id: productDetails?.data?._id,
+      updateData: submissionData,
+    });
   };
 
   if (isLoading) return <p>Loading...</p>;
   return (
-    <div>
+    <div className="flex items-center justify-center mt-10 mb-10">
       <ProductForm
         data={productDetails?.data}
-        isPending={isPending}
+        isPending={updateProductPending}
         onSubmit={handleUpdate}
         refetch={refetch}
         handleDeleteImage={handleDeleteImage}
         handleUpdatePhoto={handleUpdatePhoto}
         updateImagePending={updateImagePending}
+        pendingDeletePhoto={pendingDeletePhoto}
       />
     </div>
   );
