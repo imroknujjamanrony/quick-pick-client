@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { FaStar, FaRegStar, FaPaypal } from "react-icons/fa";
 import {
   AiOutlineHeart,
@@ -8,6 +8,8 @@ import {
   AiOutlineSwap,
   AiOutlineWarning,
 } from "react-icons/ai";
+import ReactStars from "react-stars";
+
 import RelatedProducts from "../../components/RelatedProducts";
 import Carousel from "../../components/ImageSlider.jsx";
 import { useParams } from "react-router";
@@ -15,6 +17,9 @@ import { useProducts, useSingleProduct } from "../../hooks/useProduct.js";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader/Loader.jsx";
 import Paginate from "../../components/pagination/paginate.jsx";
+import {  submitReeview } from "../../services/productService.js";
+import toast from "react-hot-toast";
+import useGetReviews from "../../hooks/reviews/useGetReviews.js";
 
 const DetailsPage = () => {
   const [quantity, setQuantity] = useState(1);
@@ -22,10 +27,16 @@ const DetailsPage = () => {
   const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { data: productDetails, isLoading } = useSingleProduct(id);
+  const [ratingStars, setRatingStars] = useState(0);
+  const [comment, setComment] = useState("");
 
-  console.log(productDetails);
-  console.log(productDetails?.category);
+
+  const { data: productDetails, isLoading, refetch } = useSingleProduct(id);
+
+  const { data: reviews, refetch: refetchReviews } = useGetReviews(
+    productDetails?._id
+  );
+  console.log(reviews);
 
   const { data: related, isFetching } = useProducts({
     searchValue: productDetails?.category?.[0],
@@ -37,6 +48,25 @@ const DetailsPage = () => {
 
   const increaseQty = () => setQuantity((q) => q + 1);
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
+
+  const handleSubmitReview = async () => {
+    const sentReview = {
+      productId: productDetails?._id,
+      //todo : replace with actual user data
+      userId: "siyam",
+      username: "Siyam",
+      rating: parseFloat(ratingStars),
+      comment: comment,
+    };
+    submitReeview(sentReview).then(() => {
+      setRatingStars(0);
+      setComment("");
+      toast.success("Review submitted successfully");
+      refetchReviews()
+    });
+
+    refetch();
+  };
 
   if (isLoading)
     return (
@@ -224,18 +254,17 @@ const DetailsPage = () => {
           >
             Description
           </button>
-          {productDetails?.reviews && (
-            <button
-              onClick={() => setActiveTab("reviews")}
-              className={`pb-2 font-medium cursor-pointer ${
-                activeTab === "reviews"
-                  ? "border-b-2 border-black"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Reviews ({productDetails?.reviews?.length})
-            </button>
-          )}
+
+          <button
+            onClick={() => setActiveTab("reviews")}
+            className={`pb-2 font-medium cursor-pointer ${
+              activeTab === "reviews"
+                ? "border-b-2 border-black"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Reviews {reviews?.data?.length ? `(${reviews.data.length})` : ""}
+          </button>
         </div>
       </div>
 
@@ -248,15 +277,59 @@ const DetailsPage = () => {
           </div>
         )}
 
-        {/* review section */}
+        {/* reviews section */}
         {activeTab === "reviews" && (
-          <div className="text-gray-600 text-base sm:text-lg font-medium space-y-4">
-            {productDetails?.reviews.map((review, i) => (
-              <div key={i} className="border-b py-3 text-sm text-gray-700">
-                <p className="font-semibold">{review.name}</p>
-                <p>{review?.comment}</p>
-              </div>
-            ))}
+          <div className="space-y-4">
+            {/* Existing reviews */}
+            {reviews?.data?.length > 0 ? (
+              reviews.data.map((review, i) => (
+                <div
+                  key={review._id || i}
+                  className="border-b pb-3 text-sm text-gray-700"
+                >
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold">{review.userId}</p>
+                    <ReactStars
+                      count={5}
+                      size={16}
+                      value={review.rating}
+                      edit={false} // read-only for existing reviews
+                    />
+                  </div>
+                  <p className="mt-1">{review.comment || "No comment"}</p>
+                  <span className="text-xs text-gray-500">
+                    {new Date(review.createdAt).toLocaleString()}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">
+                No reviews yet. Be the first to add one!
+              </p>
+            )}
+
+            {/* Add new review form */}
+            <div className="mt-4">
+              <h4 className="font-semibold mb-2">Add your review</h4>
+              <ReactStars
+                count={5}
+                size={30}
+                value={ratingStars}
+                onChange={setRatingStars}
+              />
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Write your comment..."
+                className="w-full border rounded p-2 mt-2"
+              />
+              <button
+                onClick={handleSubmitReview}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-2"
+              >
+                Submit
+              </button>
+            </div>
           </div>
         )}
       </div>

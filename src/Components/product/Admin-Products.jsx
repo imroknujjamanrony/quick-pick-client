@@ -21,8 +21,7 @@ const AdminProducts = () => {
     searchValue,
   };
 
-  const { data, refetch, isFetching, isLoading, isPending } =
-    useProducts(queryParams);
+  const { data, refetch, isFetching, isLoading, isPending } =useProducts(queryParams);
     console.log(data)
   const totalPages = data?.data?.totalPages || 1;
   const totalItems = data?.data?.total || 0;

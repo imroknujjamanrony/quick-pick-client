@@ -51,7 +51,7 @@ const Navbar = () => {
                   type="search"
                   required
                   placeholder="Search for products, categories or brands..."
-                  onChange={(e) => setSearchValue(e.target.value)}
+                  onBlur={(e) => setSearchValue(e.target.value)}
                   // defaultValue={searchValue}
                 />
               </label>

@@ -12,7 +12,6 @@ export const useProducts = (filters = {}) => {
   return useQuery({
     queryKey: ["products", filters],
     queryFn: () => fetchProduct(filters),
-    placeholderData: keepPreviousData,
   });
 };
 

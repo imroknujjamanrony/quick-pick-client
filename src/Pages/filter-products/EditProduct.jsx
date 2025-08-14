@@ -32,7 +32,7 @@ const EditProduct = () => {
   };
 
   const handleDeleteImage = async () => {
-    deleteProductImage(productDetails?.data?._id);
+    deleteProductImage(productDetails?._id);
     refetch();
   };
 
@@ -46,7 +46,7 @@ const EditProduct = () => {
     });
 
     updateProductImage({
-      id: productDetails?.data?._id,
+      id: productDetails?._id,
       updateData: submissionData,
     });
   };

@@ -40,11 +40,26 @@ export const updateProductImage = async (id, updatedData) => {
 };
 
 export const featureProduct = async (id, isFeatured) => {
-  const response = await axiosI.patch(`/feature-product/${id}`, {isFeatured});
+  const response = await axiosI.patch(`/feature-product/${id}`, { isFeatured });
   return response.data;
 };
 
-export const organicProduct = async ({id, isOrganic}) => {
-  const response = await axiosI.patch(`/orgaanic-product/${id}`, {isOrganic});
+export const organicProduct = async ({ id, isOrganic }) => {
+  const response = await axiosI.patch(`/orgaanic-product/${id}`, { isOrganic });
   return response.data;
+};
+
+export const submitReeview = async (reviewData) => {
+  const { data } = await axiosI.post("/review", reviewData);
+  return data;
+};
+
+export const fetchReeview = async (productId) => {
+  const { data } = await axiosI.get("/reviews", {
+    params: {
+      productId,
+    },
+  });
+  console.log(data)
+  return data;
 };
