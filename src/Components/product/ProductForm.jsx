@@ -110,6 +110,11 @@ export default function ProductForm({
         }
       });
     }
+    console.log(formData.isOrganic)
+
+    // submissionData.append("isOrganic", formData.isOrganic);
+
+    // console.log(submissionData);
 
     onSubmit(submissionData);
   };
@@ -262,7 +267,11 @@ export default function ProductForm({
 
       {/* isOrganic */}
       <div className="flex items-center gap-2">
-        <input type="checkbox" {...register("isOrganic")} />
+        <input
+          type="checkbox"
+          {...register("isOrganic", { valueAsBoolean: true })}
+        />
+
         <label className="text-gray-700 font-semibold">Organic Product</label>
       </div>
 

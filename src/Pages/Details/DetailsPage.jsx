@@ -14,40 +14,41 @@ import Carousel from "../../components/ImageSlider.jsx";
 import { useParams } from "react-router";
 import axiosI from "../../utils/axiosInstance.js";
 import { useQuery } from "@tanstack/react-query";
-import { useProducts } from "../../hooks/useProduct.js";
+import { useProducts, useSingleProduct } from "../../hooks/useProduct.js";
 import { Link } from "react-router-dom";
-
-const fetchProduct = async (id) => {
-  const { data } = await axiosI.get(`/product/${id}`);
-  return data.data;
-};
+import Loader from "../../components/loader/Loader.jsx";
+import Paginate from "../../components/pagination/paginate.jsx";
 
 const DetailsPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const { id } = useParams();
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const {
-    data: productDetails,
-    isLoading,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProduct(id),
-    enabled: !!id,
+  const { data: productDetails, isLoading } = useSingleProduct(id);
+
+  console.log(productDetails);
+  console.log(productDetails?.category);
+
+  const { data: related, isFetching } = useProducts({
+    searchValue: productDetails?.category?.[0],
+     page: currentPage + 1,
+    limit: 5,
   });
+  const totalPages = related?.data?.totalPages || 1;
+  const totalItems = related?.data?.total || 0;
 
-  // console.log(productDetails);
 
-  const { data: related } = useProducts({
-    searchValue: productDetails?.productname,
-  });
-  // console.log(related);
-
-  if (isLoading) return <div>loading</div>;
 
   const increaseQty = () => setQuantity((q) => q + 1);
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
+  if (isLoading)
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   return (
     <div className="px-4 py-8 w-full md:w-[80%] lg:w-[80%] mx-auto">
       {/* Top Section */}
@@ -63,15 +64,10 @@ const DetailsPage = () => {
 
         {/* Right - Details */}
         <div className="w-full lg:w-[55%]">
-          <h1 className="text-2xl font-bold">{productDetails.productname}</h1>
+          <h1 className="text-2xl font-bold">{productDetails?.productname}</h1>
 
           {/* Rating */}
           <div className="flex flex-wrap items-center gap-2 mt-2">
-            {/* <ReactStars
-              count={productDetails?.rattings}
-              size={24}
-              activeColor="#ffd700"
-            /> */}
             <span className="flex">
               <AiOutlineStar />
               <AiOutlineStar />
@@ -272,7 +268,9 @@ const DetailsPage = () => {
 
       {related?.data && (
         <div className="mt-10">
-          <h2 className="text-lg font-bold mb-4">Related products</h2>
+          <h2 className="text-lg font-bold mb-4">
+            Related products ({totalItems})
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {related?.data?.products.map((product) => (
               <Link key={product?._id} to={`/product/${product?._id}`}>
@@ -281,6 +279,16 @@ const DetailsPage = () => {
             ))}
           </div>
         </div>
+      )}
+
+      {related?.data && (
+        <Paginate
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          isFetching={isFetching}
+          isLoading={isLoading}
+          totalPages={totalPages}
+        />
       )}
     </div>
   );

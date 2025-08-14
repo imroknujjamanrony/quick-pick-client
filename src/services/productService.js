@@ -10,7 +10,7 @@ export const fetchProduct = async (filters = {}) => {
 export const fetchSingleProduct = async (id) => {
   const response = await axiosI.get(`/product/${id}`);
   // console.log("fetchSingleProduct", id);
-  return response.data;
+  return response.data.data;
 };
 
 // productService.js
@@ -36,5 +36,15 @@ export const deleteProductImage = async (id) => {
 
 export const updateProductImage = async (id, updatedData) => {
   const response = await axiosI.patch(`/productImage/${id}`, updatedData);
+  return response.data;
+};
+
+export const featureProduct = async (id, isFeatured) => {
+  const response = await axiosI.patch(`/feature-product/${id}`, {isFeatured});
+  return response.data;
+};
+
+export const organicProduct = async ({id, isOrganic}) => {
+  const response = await axiosI.patch(`/orgaanic-product/${id}`, {isOrganic});
   return response.data;
 };

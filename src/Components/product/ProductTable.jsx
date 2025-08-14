@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { useDeleteProduct } from "../../hooks/useProduct.js";
 import Paginate from "../pagination/paginate.jsx";
-import { useNavigate, useRoutes } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function ProductTable({
   data,
   mutate,
-  refetch,
   totalPages,
   setCurrentPage,
   currentPage,
   isFetching,
   isLoading,
+  handleFeatureProduct,
+  handleOrganicProduct
 }) {
   const products = data?.data?.products;
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -19,23 +19,14 @@ export default function ProductTable({
   const navigate = useNavigate();
 
   const handleEdit = (product) => {
-    console.log("Edit:", product);
     navigate(`/admin-product-edit/${product?._id}`);
 
-    // Open edit modal or navigate to edit page
   };
 
   const handleDelete = (product) => {
-    console.log("Delete:", product);
-    // Show confirm dialog & delete product
     mutate(product?._id);
-    refetch();
   };
-
-  const handleFeature = (product) => {
-    console.log("Feature:", product);
-    // API call to mark as featured
-  };
+  
 
   return (
     <div className="overflow-x-auto">
@@ -85,16 +76,16 @@ export default function ProductTable({
                   "No Image"
                 )}
               </td>
-              <td className="border p-2  md:table-cell">
-                {product?.isOrganic}
+              <td className="border p-2  md:table-cell text-center">
+                {product?.isOrganic ? "✅" : "❌"}
               </td>
-              <td className="border p-2  md:table-cell">
-                {product?.isFeatured}
+              <td className="border p-2  md:table-cell text-center">
+                {product?.isFeatured ? "✅" : "❌"}
               </td>
               <td className="border p-2  sm:table-cell">{product?.seller}</td>
               <td className="border p-2 relative">
                 <button
-                  className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 w-full mx-auto"
+                  className="px-2 py-1 bg-gray-200 rounded cursor-pointer w-full mx-auto"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === product._id ? null : product._id
@@ -104,24 +95,32 @@ export default function ProductTable({
                   ⋮
                 </button>
                 {openDropdown === product._id && (
-                  <div className="absolute right-0 mt-1 w-40 bg-white border rounded shadow-lg z-10">
+                  <div key={product?._id} className="absolute right-0 mt-1 w-40 bg-white border rounded shadow-lg z-10">
                     <button
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-2 cursor-pointer"
                       onClick={() => handleEdit(product)}
                     >
                       ✏️ Edit
                     </button>
                     <button
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-2 cursor-pointer"
                       onClick={() => handleDelete(product)}
                     >
                       🗑️ Delete
                     </button>
                     <button
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                      onClick={() => handleFeature(product)}
+                      type="button"
+                      className="block w-full text-left px-4 py-2 cursor-pointer"
+                      onClick={() => handleFeatureProduct(product)}
                     >
-                      ⭐ Feature
+                      {product?.isFeatured ? "❌ Unfeature" : "✅ Feature"}
+                    </button>
+                    <button
+                      type="button"
+                      className="block w-full text-left px-4 py-2 cursor-pointer"
+                      onClick={() => handleOrganicProduct(product)}
+                    >
+                      {product?.isOrganic ? "❌ Remove Organic tag" : "✅Add Organic tag"}
                     </button>
                   </div>
                 )}

@@ -23,6 +23,8 @@ export const useSingleProduct = (id) => {
   });
 };
 
+
+
 export const useUploadProduct = () => {
   const queryClient = useQueryClient();
 

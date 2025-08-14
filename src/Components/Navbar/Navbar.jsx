@@ -1,13 +1,14 @@
-import Notification from './Notification';
-import Header from './Header';
-import logo from '../../assets/Logo/Group 70.png';
-import { IoLocationOutline } from 'react-icons/io5';
+import Notification from "./Notification";
+import Header from "./Header";
+import logo from "../../assets/Logo/Group 70.png";
+import { IoLocationOutline } from "react-icons/io5";
 import React, { useContext, useState } from "react";
 import { RiContactsLine } from "react-icons/ri";
 import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { SearchContext } from "../../providers/SearchProvider";
+import { FaSearch } from "react-icons/fa";
 
 const Navbar = () => {
   const { setSearchValue } = useContext(SearchContext);
@@ -33,8 +34,8 @@ const Navbar = () => {
           </div>
 
           {/* Center - Search (desktop only) */}
-          <div className="hidden md:flex flex-1 justify-center max-w-lg">
-            <label className="input w-full flex items-center gap-2">
+          <div className="hidden md:flex flex-1 justify-center max-w-lg gap-2">
+            <label className="input w-full flex items-center ">
               <svg
                 className="h-[1em] opacity-50"
                 xmlns="http://www.w3.org/2000/svg"
@@ -55,10 +56,16 @@ const Navbar = () => {
                 type="search"
                 required
                 placeholder="Search for products, categories or brands..."
-                onChange={(e) => setSearchValue(e.target.value)}
+                onBlur={(e) => setSearchValue(e.target.value)}
                 className="flex-1 outline-none"
               />
             </label>
+            <button
+              type="button"
+              className="flex items-center justify-center cursor-pointer ml-5"
+            >
+              <FaSearch  size={24}/>
+            </button>
           </div>
 
           {/* Right - Desktop Icons */}

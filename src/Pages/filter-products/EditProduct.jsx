@@ -7,21 +7,26 @@ import {
   useUpdateProductImage,
 } from "../../hooks/useUpdateProduct";
 import { useSingleProduct } from "../../hooks/useProduct";
+import Loader from "../../components/loader/Loader";
 
 const EditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { data: productDetails, isLoading, refetch } = useSingleProduct(id);
+  console.log(productDetails)
   const { mutate: deleteProductImage, isPending: pendingDeletePhoto } =
-    useDeleteProductImage(productDetails?.data?._id);
+    useDeleteProductImage(productDetails?._id);
 
   const { mutate: updateProduct, isPending: updateProductPending } =
     useUpdateProduct(id);
+
+
   const { mutate: updateProductImage, isPending: updateImagePending } =
     useUpdateProductImage(id);
 
   const handleUpdate = (formData) => {
+    console.log(formData)
     updateProduct(formData);
     navigate("/admin-products");
   };
@@ -46,11 +51,13 @@ const EditProduct = () => {
     });
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  
+
+  if (isLoading) return <p><Loader/></p>;
   return (
     <div className="flex items-center justify-center mt-10 mb-10">
       <ProductForm
-        data={productDetails?.data}
+        data={productDetails}
         isPending={updateProductPending}
         onSubmit={handleUpdate}
         refetch={refetch}

@@ -1,35 +1,34 @@
-import { useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { useProducts } from "../../hooks/useProduct.js";
 import PriceFilterWidget from "../../components/PriceFilterWidget.jsx";
-import Pagination from "../../components/Pagination";
 import { Link } from "react-router-dom";
 import RelatedProducts from "../../components/RelatedProducts.jsx";
 import Paginate from "../../components/pagination/paginate.jsx";
+import { SearchContext } from "../../providers/SearchProvider.jsx";
 
 const FilterProductPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [filterOption, setFilterOption] = useState(undefined);
   const [currentPage, setCurrentPage] = useState(0);
+  const { searchValue } = useContext(SearchContext);
+
   const itemsPerPage = 10;
 
   const queryParams = {
     ...filterOption,
     page: currentPage + 1,
     limit: itemsPerPage,
+    searchValue,
   };
 
-  console.log(queryParams);
-
   const { data, isLoading, isFetching } = useProducts(queryParams);
-
-  console.log(data);
 
   const totalPages = data?.data?.totalPages || 1;
   const productsData = data?.data?.products || [];
   const totalItems = data?.data?.total || 0;
 
   return (
-    <div className="flex flex-col md:flex-row md:w-[80%] mx-auto justify-between">
+    <div className="flex flex-col md:flex-row justify-between md:w-[80%] mx-auto ">
       {/* Sidebar Filter - Desktop */}
       <aside className="hidden md:block md:w-64 flex-shrink-0 p-4 bg-white">
         <PriceFilterWidget
