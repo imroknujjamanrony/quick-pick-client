@@ -15,6 +15,9 @@ import AddProduct from "../components/AddProduct.jsx";
 import ProductTable from "../components/product/ProductTable.jsx";
 import AdminProducts from "../components/product/Admin-Products.jsx";
 import EditProduct from "../Pages/filter-products/EditProduct.jsx";
+import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
+import CartPage from "../Pages/Cart/Cart.jsx";
+import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +37,6 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login></Login>,
       },
-
       {
         path: "/blogs",
         element: <Blogs></Blogs>,
@@ -52,14 +54,11 @@ export const router = createBrowserRouter([
           return { blogs, count };
         },
       },
-
       {
         path: "/blogs/:id",
         element: <BlogsDetails></BlogsDetails>,
-        loader: ({ params }) =>
-          fetch(`http://localhost:5000/jinStoreBlogsCollection/${params.id}`),
+        loader: ({params}) => fetch(`http://localhost:5000/jinStoreBlogsCollection/${params.id}`)
       },
-
       {
         path: "/contact",
         element: <Contact />,
@@ -72,7 +71,6 @@ export const router = createBrowserRouter([
         path: "/add-product",
         element: <AddProduct />,
       },
-
       {
         path: "/filter-products",
         element: <FilterProductPage />,
@@ -100,7 +98,7 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutPage />,
-      },
+      }
     ],
   },
 ]);
