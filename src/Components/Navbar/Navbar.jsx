@@ -8,10 +8,32 @@ import { RiContactsLine } from "react-icons/ri";
 import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
 import { SearchContext } from "../../providers/SearchProvider";
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthContext';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
+  const {user , logout} = useContext(AuthContext)
   const { searchValue, setSearchValue } = useContext(SearchContext);
   console.log(searchValue)
+
+  const handleLogOut = () => {
+    logout()
+    .then (() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "User Logout Successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        
+    })
+    .catch((error) => {
+          console.log('Error logging out',error);
+          
+        })
+  }
   return (
     <nav>
       <Notification></Notification>
@@ -90,10 +112,21 @@ const Navbar = () => {
             <button className="text-2xl">
               <RiContactsLine />
             </button>
-            <p>
-              <span className="text-[12px]">Sign In</span> <br />{" "}
+          {user ? (
+
+  <>
+         <button onClick={handleLogOut} className='btn btn-ghost'>SignOut</button>    
+             </>
+) : (
+  <>
+   <p>
+            <Link to = '/tabs'>  <button className="text-[12px] ">Sign In </button> <br />{" "}</Link>
               <span className="font-bold">Account</span>{" "}
             </p>
+  </>
+)
+             
+          }
             <button className="text-2xl">
               <GoHeart />
             </button>

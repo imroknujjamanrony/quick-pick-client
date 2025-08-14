@@ -11,6 +11,8 @@ import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import Blogs from "../Pages/Blogs/Blogs.jsx";
 import AuthTab from "../Components/AuthTab.jsx";
+import PrivacyPolicy from "../Components/PrivacyPolicy.jsx";
+import UpdateToVendor from "../Pages/UpdateToVendor.jsx";
 
 
 export const router = createBrowserRouter([
@@ -28,16 +30,24 @@ export const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
+        path: '/privacypolicy',
+        element: <PrivacyPolicy></PrivacyPolicy>
+      },
+      {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+path: '/updatetovendor',
+element: <UpdateToVendor></UpdateToVendor>
       },
    
   {
   path: "/blogs",
   element: <Blogs></Blogs>,
   loader: async () => {
-    const blogsRes = await fetch('http://localhost:5000/jinStoreBlogsCollection');
-    const countRes = await fetch('http://localhost:5000/blogsCollectionCount');
+    const blogsRes = await fetch('https://quick-pick-server-zeta.vercel.app/jinStoreBlogsCollection');
+    const countRes = await fetch('https://quick-pick-server-zeta.vercel.app/blogsCollectionCount');
 
     const blogs = await blogsRes.json();
     const count = await countRes.json();

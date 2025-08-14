@@ -126,14 +126,7 @@ const {
                 </span>
               )}
             </div>
-<div className="flex gap-2">
-    <input type="radio" name="radio-1" defaultChecked />
-<p>I am a customer</p>
-</div>
-<div className="flex gap-2">
-    <input type="radio" name="radio-1"  />
-<p>I am a vendor</p>
-</div>
+
 
             <div className="form-control mt-6 text-center">
               <input  className="btn bg-[#634c95] text-white w-full" type="submit" 

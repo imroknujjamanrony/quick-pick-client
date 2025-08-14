@@ -5,7 +5,7 @@ import Login from '../Pages/Login';
 
 const AuthTab = () => {
   return (
-    <div className="max-w-sm mx-auto mt-10 ">
+    <div className="max-w-sm mx-auto mt-10 mb-24 ">
      
        <Tabs>
         <div>

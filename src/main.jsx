@@ -5,6 +5,7 @@ import { router } from "./Routes/Router";
 import "./index.css";
 import SearchProvider from "./providers/SearchProvider.jsX";
 import TanStackProvider from "./providers/TanStackProvider";
+import AuthProvider from "./providers/AuthProvider";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -12,7 +13,7 @@ createRoot(document.getElementById("root")).render(
     <div className="max-w-screen mx-auto overflow-x-hidden">
       <TanStackProvider>
         <SearchProvider>
-          <RouterProvider router={router} />
+          <AuthProvider>    <RouterProvider router={router} /></AuthProvider>
         </SearchProvider>
       </TanStackProvider>
     </div>
