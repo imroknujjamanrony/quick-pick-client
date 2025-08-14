@@ -7,15 +7,15 @@ import Swal from "sweetalert2";
 const Login = () => {
   const { signInUser } = useContext(AuthContext);
   const location = useLocation();
-
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
+
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data) => {
     console.log(data);
     signInUser(data.email, data.password).then((result) => {
@@ -44,12 +44,12 @@ const Login = () => {
 
   return (
     <div>
-      <p className="text-sm mb-4 -ml-12 ">
-        If you have an account signin with your username or email address.
+      <p className="text-sm mb-4 -ml-12">
+        If you have an account sign in with your username or email address.
       </p>
       <div className="card bg-base-100 -ml-12 max-w-sm shrink-0 shadow-2xl">
         <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-          {/* Name  */}
+          {/* Username */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Username</span>
@@ -65,7 +65,7 @@ const Login = () => {
             )}
           </div>
 
-          {/* Email  */}
+          {/* Email */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email address</span>
@@ -74,7 +74,8 @@ const Login = () => {
               type="email"
               {...register("email", {
                 required: true,
-                pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                pattern:
+                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
               })}
               placeholder="Email"
               className="input input-bordered"
@@ -86,7 +87,8 @@ const Login = () => {
               <span className="text-red-600">Invalid email address</span>
             )}
           </div>
-          {/* Password  */}
+
+          {/* Password */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Password</span>
@@ -115,6 +117,8 @@ const Login = () => {
               </span>
             )}
           </div>
+
+          {/* Role Selection */}
           <div className="flex gap-2">
             <input type="radio" name="radio-1" defaultChecked />
             <p>I am a customer</p>
@@ -124,6 +128,7 @@ const Login = () => {
             <p>I am a vendor</p>
           </div>
 
+          {/* Submit Button */}
           <div className="form-control mt-6 text-center">
             <input
               className="btn bg-[#634c95] text-white w-full"

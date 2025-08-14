@@ -2,23 +2,44 @@ import Notification from "./Notification";
 import Header from "./Header";
 import logo from "../../assets/Logo/Group 70.png";
 import { IoLocationOutline } from "react-icons/io5";
-import  { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { RiContactsLine } from "react-icons/ri";
 import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { SearchContext } from "../../providers/SearchProvider";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthContext';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
   const { searchValue, setSearchValue } = useContext(SearchContext);
+
   console.log(searchValue);
+
+  const handleLogOut = () => {
+    logout()
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "User Logout Successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      })
+      .catch((error) => {
+        console.log('Error logging out', error);
+      });
+  };
+
   return (
     <nav>
-      <Notification></Notification>
+      <Notification />
       <div>
         <div className="lg:w-[80%] mx-auto">
-          <Header></Header>
+          <Header />
           <div className="flex items-center justify-between py-4 gap-2 lg:gap-4">
             <div className="flex gap-3 items-center">
               <img src={logo} alt="logo" />
@@ -60,16 +81,28 @@ const Navbar = () => {
               <button className="text-2xl">
                 <RiContactsLine />
               </button>
-              <Link to="/login">
-                <span className="text-[12px]">Sign In</span> <br />{" "}
-                <span className="font-bold">Account</span>{" "}
-              </Link>
+              {user ? (
+                <>
+                  <button onClick={handleLogOut} className='btn btn-ghost'>
+                    SignOut
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p>
+                    <Link to='/tabs'>
+                      <button className="text-[12px]">Sign In</button> <br />{" "}
+                    </Link>
+                    <span className="font-bold">Account</span>{" "}
+                  </p>
+                </>
+              )}
               <button className="text-2xl">
                 <GoHeart />
               </button>
-              <Link to="/cart" className="text-2xl">
+              <button className="text-2xl">
                 <GrCart />
-              </Link>
+              </button>
             </div>
           </div>
         </div>
