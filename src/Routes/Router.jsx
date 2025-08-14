@@ -11,10 +11,13 @@ import DetailsPage from "../Pages/Details/DetailsPage.jsx";
 import FilterProductPage from "../Pages/filter-products/FilterProductPage.jsx";
 import Blogs from "../Pages/Blogs/Blogs.jsx";
 import AuthTab from "../Components/AuthTab.jsx";
+import AddProduct from "../components/AddProduct.jsx";
+import ProductTable from "../components/product/ProductTable.jsx";
+import AdminProducts from "../components/product/Admin-Products.jsx";
+import EditProduct from "../Pages/filter-products/EditProduct.jsx";
 import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
 import CartPage from "../Pages/Cart/Cart.jsx";
 import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
-
 
 export const router = createBrowserRouter([
   {
@@ -34,29 +37,28 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login></Login>,
       },
-   
-  {
-  path: "/blogs",
-  element: <Blogs></Blogs>,
-  loader: async () => {
-    const blogsRes = await fetch('http://localhost:5000/jinStoreBlogsCollection');
-    const countRes = await fetch('http://localhost:5000/blogsCollectionCount');
+      {
+        path: "/blogs",
+        element: <Blogs></Blogs>,
+        loader: async () => {
+          const blogsRes = await fetch(
+            "http://localhost:5000/jinStoreBlogsCollection"
+          );
+          const countRes = await fetch(
+            "http://localhost:5000/blogsCollectionCount"
+          );
 
-    const blogs = await blogsRes.json();
-    const count = await countRes.json();
+          const blogs = await blogsRes.json();
+          const count = await countRes.json();
 
-    return { blogs, count };
-  }
-},
-
-{
+          return { blogs, count };
+        },
+      },
+      {
         path: "/blogs/:id",
         element: <BlogsDetails></BlogsDetails>,
         loader: ({params}) => fetch(`http://localhost:5000/jinStoreBlogsCollection/${params.id}`)
-
-      
       },
-
       {
         path: "/contact",
         element: <Contact />,
@@ -64,12 +66,22 @@ export const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <DetailsPage />,
-
       },
-
+      {
+        path: "/add-product",
+        element: <AddProduct />,
+      },
       {
         path: "/filter-products",
         element: <FilterProductPage />,
+      },
+      {
+        path: "/admin-products",
+        element: <AdminProducts />,
+      },
+      {
+        path: "/admin-product-edit/:id",
+        element: <EditProduct />,
       },
       {
         path: "/tabs",

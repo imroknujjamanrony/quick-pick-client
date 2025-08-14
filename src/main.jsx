@@ -5,6 +5,7 @@ import { router } from "./Routes/Router";
 import "./index.css";
 import SearchProvider from "./providers/SearchProvider.jsX";
 import TanStackProvider from "./providers/TanStackProvider";
+import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")).render(
           <RouterProvider router={router} />
         </SearchProvider>
       </TanStackProvider>
+      <Toaster/>
     </div>
   </StrictMode>
 );
