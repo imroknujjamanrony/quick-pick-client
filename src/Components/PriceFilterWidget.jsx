@@ -1,17 +1,14 @@
-import React, { useContext, useState } from "react";
-import { SearchContext } from "../providers/SearchProvider";
-import { div } from "framer-motion/client";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const PriceFilterWidget = ({ setFilterOption }) => {
-  // State variables
   const [minPrice, setMinPrice] = useState("0");
   const [maxPrice, setMaxPrice] = useState("30");
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
-  const [status, setStatus] = useState([]);
-  const { searchValue, setSearchValue } = useContext(SearchContext);
+  const [category, setCategory] = useState(""); // Single value
+  const [brand, setBrand] = useState(""); // Single value
+  const [status, setStatus] = useState(""); // Single value
 
-  const category = [
+  const categories = [
     "Fruits & Vegetables",
     "Baby & Pregnancy",
     "Beverages",
@@ -25,17 +22,8 @@ const PriceFilterWidget = ({ setFilterOption }) => {
     "Household Needs",
   ];
 
-  const brand = ["Fresh", "coca-cola", "Nestle", "Pran", "Unilever"];
-
-  // Generic checkbox handler
-  const handleCheckboxChange = (e, setState) => {
-    const value = e.target.value;
-    setState((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
+  const brands = ["Fresh", "coca-cola", "Nestle", "Pran", "Unilever"];
+  const statusOptions = ["In Stock", "On Sale" , 'Organic', 'Featured Products'];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,43 +32,33 @@ const PriceFilterWidget = ({ setFilterOption }) => {
     const max = Number(maxPrice);
 
     if (isNaN(min) || isNaN(max)) {
-      alert("Please enter valid numbers for price.");
+      toast.error("Please enter valid numbers for price.");
       return;
     }
 
     if (min > max) {
-      alert("Min price cannot be greater than max price.");
+      toast.error("Min price cannot be greater than max price.");
       return;
     }
+
+    console.log("Selected filters:", {
+      minPrice: min,
+      maxPrice: max,
+      category,
+      brand,
+      status
+    });
 
     setFilterOption({
       minPrice: min,
       maxPrice: max,
-      categories,
-      brands,
+      category,
+      brand,
       status,
-      searchValue,
     });
-
-    console.log({
-      minPrice: min,
-      maxPrice: max,
-      categories,
-      brands,
-      status,
-      searchValue,
-    });
-
-    // setMinPrice("0");
-    // setMaxPrice("30");
-    // setCategories([]);
-    // setBrands([]);
-    // setStatus([]);
-    // setSearchValue("");
   };
 
   return (
-    
     <form
       className="w-64 bg-white p-4 font-sans text-sm text-gray-800"
       onSubmit={handleSubmit}
@@ -138,17 +116,18 @@ const PriceFilterWidget = ({ setFilterOption }) => {
       {/* Product Categories */}
       <h2 className="font-bold mb-3">Product Categories</h2>
       <div className="mb-6 space-y-2">
-        {category.map((cat) => (
+        {categories.map((cat) => (
           <div key={cat} className="flex items-center">
             <input
-              type="checkbox"
-              id={cat.id}
+              type="radio"
+              name="category"
+              id={`category-${cat}`}
               value={cat}
-              checked={categories.includes(cat)}
-              onChange={(e) => handleCheckboxChange(e, setCategories)}
+              checked={category === cat}
+              onChange={() => setCategory(cat)}
               className="mr-2"
             />
-            <p>{cat}</p>
+            <label htmlFor={`category-${cat}`}>{cat}</label>
           </div>
         ))}
       </div>
@@ -156,17 +135,18 @@ const PriceFilterWidget = ({ setFilterOption }) => {
       {/* Filter by Brands */}
       <h2 className="font-bold mb-3">Filter by Brands</h2>
       <div className="mb-6 space-y-2">
-        {brand.map((brand) => (
-          <div key={brand} className="flex items-center">
+        {brands.map((br) => (
+          <div key={br} className="flex items-center">
             <input
-              type="checkbox"
-              id={brand?.id}
-              value={brand}
-              checked={brands.includes(brand)}
-              onChange={(e) => handleCheckboxChange(e, setBrands)}
+              type="radio"
+              name="brand"
+              id={`brand-${br}`}
+              value={br}
+              checked={brand === br}
+              onChange={() => setBrand(br)}
               className="mr-2"
             />
-            <p>{brand}</p>
+            <label htmlFor={`brand-${br}`}>{br}</label>
           </div>
         ))}
       </div>
@@ -174,17 +154,18 @@ const PriceFilterWidget = ({ setFilterOption }) => {
       {/* Product Status */}
       <h2 className="font-bold mb-3">Product Status</h2>
       <div className="space-y-2">
-        {["In Stock", "On Sale"].map((stat) => (
+        {statusOptions.map((stat) => (
           <div key={stat} className="flex items-center">
             <input
-              type="checkbox"
-              id={stat?.id}
+              type="radio"
+              name="status"
+              id={`status-${stat}`}
               value={stat}
-              checked={status.includes(stat)}
-              onChange={(e) => handleCheckboxChange(e, setStatus)}
+              checked={status === stat}
+              onChange={() => setStatus(stat)}
               className="mr-2"
             />
-            <p>{stat}</p>
+            <label htmlFor={`status-${stat}`}>{stat}</label>
           </div>
         ))}
       </div>

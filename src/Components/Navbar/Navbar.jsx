@@ -2,10 +2,11 @@ import Notification from "./Notification";
 import Header from "./Header";
 import logo from "../../assets/Logo/Group 70.png";
 import { IoLocationOutline } from "react-icons/io5";
-import React, { useContext } from "react";
+import  { useContext, useState } from "react";
 import { RiContactsLine } from "react-icons/ri";
 import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
+import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { SearchContext } from "../../providers/SearchProvider";
 import { Link } from "react-router-dom";
 
@@ -76,4 +77,5 @@ const Navbar = () => {
     </nav>
   );
 };
+
 export default Navbar;
