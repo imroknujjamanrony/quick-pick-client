@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")).render(
     <div className="max-w-screen mx-auto overflow-x-hidden">
       <TanStackProvider>
         <SearchProvider>
-          <RouterProvider router={router} />
+          
         </SearchProvider>
       </TanStackProvider>
       <Toaster/>
