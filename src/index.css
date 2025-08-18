@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.react-tabs__tab--selected {
+  font-weight: 700; /* Tailwind font-bold */
+  color: #000000;   /* Tailwind text-black */
+  border-bottom: 2px solid #3b82f6; /* Tailwind border-blue-500 */
+}
