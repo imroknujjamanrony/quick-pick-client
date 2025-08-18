@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { FaStar, FaRegStar, FaPaypal } from "react-icons/fa";
 import {
   AiOutlineHeart,
@@ -17,7 +17,7 @@ import { useProducts, useSingleProduct } from "../../hooks/useProduct.js";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader/Loader.jsx";
 import Paginate from "../../components/pagination/paginate.jsx";
-import {  submitReeview } from "../../services/productService.js";
+import { submitReeview } from "../../services/productService.js";
 import toast from "react-hot-toast";
 import useGetReviews from "../../hooks/reviews/useGetReviews.js";
 
@@ -29,7 +29,6 @@ const DetailsPage = () => {
 
   const [ratingStars, setRatingStars] = useState(0);
   const [comment, setComment] = useState("");
-
 
   const { data: productDetails, isLoading, refetch } = useSingleProduct(id);
 
@@ -62,7 +61,7 @@ const DetailsPage = () => {
       setRatingStars(0);
       setComment("");
       toast.success("Review submitted successfully");
-      refetchReviews()
+      refetchReviews();
     });
 
     refetch();
@@ -93,13 +92,12 @@ const DetailsPage = () => {
 
           {/* Rating */}
           <div className="flex flex-wrap items-center gap-2 mt-2">
-            <span className="flex">
-              <AiOutlineStar />
-              <AiOutlineStar />
-              <AiOutlineStar />
-              <AiOutlineStar />
-              <AiOutlineStar />
-            </span>
+            <ReactStars
+              count={5}
+              size={16}
+              value={4.2}
+              edit={false}
+            />
             {productDetails?.rattings && (
               <span className="text-sm text-gray-500 border-gray-200 border-2 p-[2px] rounded-md font-semibold">
                 {productDetails?.rattings.toFixed(2)}
@@ -293,7 +291,7 @@ const DetailsPage = () => {
                       count={5}
                       size={16}
                       value={review.rating}
-                      edit={false} // read-only for existing reviews
+                      edit={false}
                     />
                   </div>
                   <p className="mt-1">{review.comment || "No comment"}</p>
