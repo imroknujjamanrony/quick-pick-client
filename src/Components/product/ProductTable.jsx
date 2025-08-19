@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Paginate from "../pagination/paginate.jsx";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import Paginate from "../pagination/paginate.jsx";
 
 export default function ProductTable({
   data,
@@ -11,7 +12,7 @@ export default function ProductTable({
   isFetching,
   isLoading,
   handleFeatureProduct,
-  handleOrganicProduct
+  handleOrganicProduct,
 }) {
   const products = data?.data?.products;
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -20,18 +21,19 @@ export default function ProductTable({
 
   const handleEdit = (product) => {
     navigate(`/admin-product-edit/${product?._id}`);
-
   };
 
   const handleDelete = (product) => {
     mutate(product?._id);
   };
-  
 
   return (
     <div className="overflow-x-auto">
-      <div className="text-2xl font-bold mt-10 mb-5">
-        total products : {totalItems}
+      <div className="text-2xl font-bold mt-10 mb-5 flex justify-between w-[80%] mx-auto">
+        <p> total products : {totalItems}</p>
+        <Link to={"/add-product"} className="text-blue-500 hover:underline">
+          Add New Product
+        </Link>
       </div>
       <table className="w-full border border-gray-300 text-sm sm:text-base">
         <thead className="bg-gray-100">
@@ -45,6 +47,7 @@ export default function ProductTable({
             <th className="border p-2">Images</th>
             <th className="border p-2  md:table-cell">Organic</th>
             <th className="border p-2  md:table-cell">Featured</th>
+            <th className="border p-2  md:table-cell">Date</th>
             <th className="border p-2  sm:table-cell">Seller</th>
             <th className="border p-2">Actions</th>
           </tr>
@@ -82,6 +85,9 @@ export default function ProductTable({
               <td className="border p-2  md:table-cell text-center">
                 {product?.isFeatured ? "✅" : "❌"}
               </td>
+              <td className="border p-2  sm:table-cell">
+                {new Date(product?.createdAt).toLocaleString()}
+              </td>
               <td className="border p-2  sm:table-cell">{product?.seller}</td>
               <td className="border p-2 relative">
                 <button
@@ -95,7 +101,10 @@ export default function ProductTable({
                   ⋮
                 </button>
                 {openDropdown === product._id && (
-                  <div key={product?._id} className="absolute right-0 mt-1 w-40 bg-white border rounded shadow-lg z-10">
+                  <div
+                    key={product?._id}
+                    className="absolute right-0 mt-1 w-40 bg-white border rounded shadow-lg z-10"
+                  >
                     <button
                       className="block w-full text-left px-4 py-2 cursor-pointer"
                       onClick={() => handleEdit(product)}
@@ -120,7 +129,9 @@ export default function ProductTable({
                       className="block w-full text-left px-4 py-2 cursor-pointer"
                       onClick={() => handleOrganicProduct(product)}
                     >
-                      {product?.isOrganic ? "❌ Remove Organic tag" : "✅Add Organic tag"}
+                      {product?.isOrganic
+                        ? "❌ Remove Organic tag"
+                        : "✅Add Organic tag"}
                     </button>
                   </div>
                 )}

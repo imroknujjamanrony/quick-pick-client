@@ -22,6 +22,7 @@ import EditProduct from "../Pages/filter-products/EditProduct.jsx";
 import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
 import CartPage from "../Pages/Cart/Cart.jsx";
 import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
+import UsersTable from "../Components/UsersTable.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
       {
         path: "/admin-product-edit/:id",
         element: <EditProduct />,
+      },
+      {
+        path: '/users-table',
+        element : <UsersTable/>
       },
       {
         path: "/tabs",

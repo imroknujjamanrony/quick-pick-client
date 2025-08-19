@@ -21,14 +21,14 @@ export const useUpdateProduct = (id) => {
   });
 };
 
-export const useDeleteProductImage = (id) => {
+export const useDeleteProductImage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) => deleteProductImage(id),
+    mutationFn: deleteProductImage,
     onSuccess: () => {
       toast.success("Product image deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["product", id] });
+      queryClient.invalidateQueries({ queryKey: ["product",] });
     },
     onError: () => {
       toast.error("Error while deleting product image");

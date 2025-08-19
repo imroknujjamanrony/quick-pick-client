@@ -128,14 +128,14 @@ const Login = () => {
           </div>
 
           {/* Role Selection */}
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <input type="radio" name="radio-1" defaultChecked />
             <p>I am a customer</p>
           </div>
           <div className="flex gap-2">
             <input type="radio" name="radio-1" />
             <p>I am a vendor</p>
-          </div>
+          </div> */}
 
           {/* Submit Button */}
           <div className="form-control mt-6 text-center">

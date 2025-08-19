@@ -7,14 +7,16 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase_init.js";
-import axios from "axios";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState('');
+  const [username, setUsername] = useState("");
+  const [userEmail, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const createUser = ( email, password) => {
-console.log('from provider',email, password)
+  const createUser = (email, password) => {
+    console.log("from provider", email, password);
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -47,6 +49,12 @@ console.log('from provider',email, password)
     createUser,
     signInUser,
     logout,
+    setUserId,
+    userId,
+    setUsername,
+    username,
+    userEmail,
+    setEmail,
   };
 
   return (

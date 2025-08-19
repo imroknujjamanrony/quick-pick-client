@@ -13,40 +13,18 @@ const Register = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const { createUser, loading } = useContext(AuthContext);
+  const { createUser, loading, setUsername, setUserId, setEmail } =
+    useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
 
     formState: { errors },
   } = useForm();
-  // const onSubmit = async (data) => {
-  //   console.log(data);
-
-  //   const userInfo = {
-  //     name: data?.name,
-  //     email: data?.email,
-  //   };
-  //   await createUser(data.name, data.email, data.password).then((result) => {
-  //     const loggedUser = result.user;
-
-  //     if (loggedUser?.email) {
-  //       axiosI.post("/register", userInfo);
-  //     }
-  //     Swal.fire({
-  //       position: "top-end",
-  //       icon: "success",
-  //       title: "User Created Successfully",
-  //       showConfirmButton: false,
-  //       timer: 1500,
-  //     });
-  //   });
-  //   navigate('/');
-  // };
 
   const onSubmit = async (data) => {
     try {
-      // 1. Create Firebase user
       console.log("from : ", data.email, data.password);
       const result = await createUser(data?.email, data?.password);
       const loggedUser = result.user;
@@ -54,10 +32,19 @@ const Register = () => {
       if (loggedUser?.email) {
         const userInfo = {
           name: data?.name,
-          email: data?.email, // add role
+          email: data?.email,
         };
-        // 2. Call backend to register and set cookie
-        await axiosI.post("/register", userInfo, { withCredentials: true });
+
+        const { data: userData } = await axiosI.post("/register", userInfo, {
+          withCredentials: true,
+        });
+        console.log('after register :',userData?.data?._id);
+        if (userData) {
+          // 1. Set userId and username in AuthContext
+          setUserId(userData?.data?._id);
+          setUsername(userData?.data?.name);
+          setEmail(userData?.data?.email);
+        }
 
         // 3. Show success
         Swal.fire({
@@ -154,14 +141,6 @@ const Register = () => {
                 Password cannot exceed 20 characters
               </span>
             )}
-          </div>
-          <div className="flex gap-2">
-            <input type="radio" name="radio-1" defaultChecked />
-            <p>I am a customer</p>
-          </div>
-          <div className="flex gap-2">
-            <input type="radio" name="radio-1" />
-            <p>I am a vendor</p>
           </div>
 
           <div>

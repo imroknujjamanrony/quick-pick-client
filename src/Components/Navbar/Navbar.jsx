@@ -8,32 +8,35 @@ import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { SearchContext } from "../../providers/SearchProvider";
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../providers/AuthContext';
-import Swal from 'sweetalert2';
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthContext";
+import Swal from "sweetalert2";
 import axiosI from "../../utils/axiosInstance";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { searchValue, setSearchValue } = useContext(SearchContext);
+  const { userId, username, userEmail } = useContext(AuthContext);
 
-  console.log(searchValue);
+  // console.log(userId, username, userEmail);
 
-  const handleLogOut =async () => {
-  await  logout()
+  console.log(userEmail)
+
+  const handleLogOut = async () => {
+    await logout()
       .then(() => {
         Swal.fire({
           position: "top-end",
           icon: "success",
           title: "User Logout Successfully",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
 
-        axiosI.post('/logout')
+        axiosI.post("/logout");
       })
       .catch((error) => {
-        console.log('Error logging out', error);
+        console.log("Error logging out", error);
       });
   };
 
@@ -86,14 +89,14 @@ const Navbar = () => {
               </button>
               {user ? (
                 <>
-                  <button onClick={handleLogOut} className='btn btn-ghost'>
+                  <button onClick={handleLogOut} className="btn btn-ghost">
                     SignOut
                   </button>
                 </>
               ) : (
                 <>
                   <p>
-                    <Link to='/tabs'>
+                    <Link to="/tabs">
                       <button className="text-[12px]">Sign In</button> <br />{" "}
                     </Link>
                     <span className="font-bold">Account</span>{" "}

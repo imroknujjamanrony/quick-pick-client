@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 import { useLocation } from "react-router";
 import Loader from "../loader/Loader";
+import { AuthContext } from "../../providers/AuthContext";
 
 const categories = [
   "Fruits & Vegetables",
@@ -30,6 +31,8 @@ export default function ProductForm({
 }) {
   const [images, setImages] = useState([]);
   const { pathname } = useLocation();
+  const {userId} = useContext(AuthContext)
+  console.log(userId)
 
   const {
     register,
@@ -50,7 +53,7 @@ export default function ProductForm({
         brand: data.brand || "",
         price: data.price || "",
         quantity: data.quantity || "",
-        seller: data.seller || "",
+        seller: userId || "",
         isOrganic: data.isOrganic || false,
       });
       setImages(data.images || []); // images from DB as URLs
@@ -69,7 +72,7 @@ export default function ProductForm({
       });
       setImages([]);
     }
-  }, [data, reset]);
+  }, [data, reset, userId]);
 
   // Handle adding new images
   const handleImageChange = (e) => {
@@ -85,7 +88,6 @@ export default function ProductForm({
 
     setImages(totalImages);
 
-    // For edit mode, trigger backend update for images
     if (data) {
       handleUpdatePhoto(newFiles);
     }
@@ -248,7 +250,7 @@ export default function ProductForm({
         </div>
       </div>
 
-      {/* Seller */}
+      {/* Seller
       <div>
         <label className="block text-gray-700 font-semibold mb-2">
           Seller <span className="text-red-500">*</span>
@@ -263,7 +265,7 @@ export default function ProductForm({
         {errors.seller && (
           <p className="text-red-500 text-sm">{errors.seller.message}</p>
         )}
-      </div>
+      </div> */}
 
       {/* isOrganic */}
       <div className="flex items-center gap-2">

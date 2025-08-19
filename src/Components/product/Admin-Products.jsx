@@ -7,7 +7,7 @@ import useOrganicProuct from "../../hooks/useOrganicProuct.js";
 import Loader from "../loader/Loader.jsx";
 
 const AdminProducts = () => {
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -23,7 +23,7 @@ const AdminProducts = () => {
 
   const { data, refetch, isFetching, isLoading, isPending } =
     useProducts(queryParams);
-    console.log(data)
+
   const totalPages = data?.data?.totalPages || 1;
   const totalItems = data?.data?.total || 0;
   const { mutate } = useDeleteProduct();

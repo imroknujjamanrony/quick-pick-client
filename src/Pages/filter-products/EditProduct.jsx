@@ -1,22 +1,23 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
-import ProductForm from "../../components/product/ProductForm";
+import ProductForm from "../../components/product/ProductForm.jsx";
 import {
   useDeleteProductImage,
   useUpdateProduct,
   useUpdateProductImage,
 } from "../../hooks/useUpdateProduct";
 import { useSingleProduct } from "../../hooks/useProduct";
-import Loader from "../../components/loader/Loader";
+import Loader from "../../components/loader/Loader.jsx";
 
 const EditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log(id)
 
   const { data: productDetails, isLoading, refetch } = useSingleProduct(id);
   console.log(productDetails)
   const { mutate: deleteProductImage, isPending: pendingDeletePhoto } =
-    useDeleteProductImage(productDetails?._id);
+    useDeleteProductImage(id);
 
   const { mutate: updateProduct, isPending: updateProductPending } =
     useUpdateProduct(id);
@@ -32,7 +33,7 @@ const EditProduct = () => {
   };
 
   const handleDeleteImage = async () => {
-    deleteProductImage(productDetails?.data?._id);
+    deleteProductImage(id);
     refetch();
   };
 
@@ -46,7 +47,7 @@ const EditProduct = () => {
     });
 
     updateProductImage({
-      id: productDetails?.data?._id,
+      id: id,
       updateData: submissionData,
     });
   };
