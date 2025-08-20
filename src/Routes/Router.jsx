@@ -23,6 +23,8 @@ import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
 import CartPage from "../Pages/Cart/Cart.jsx";
 import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
 import UsersTable from "../Components/UsersTable.jsx";
+import AdminLayout from "../Layouts/admin/AdminLayout.jsx";
+import AdminHome from "../Pages/admin/AdminHome.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -83,24 +85,8 @@ export const router = createBrowserRouter([
         element: <DetailsPage />,
       },
       {
-        path: "/add-product",
-        element: <AddProduct />,
-      },
-      {
         path: "/filter-products",
         element: <FilterProductPage />,
-      },
-      {
-        path: "/admin-products",
-        element: <AdminProducts />,
-      },
-      {
-        path: "/admin-product-edit/:id",
-        element: <EditProduct />,
-      },
-      {
-        path: '/users-table',
-        element : <UsersTable/>
       },
       {
         path: "/tabs",
@@ -117,6 +103,21 @@ export const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutPage />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <AdminHome /> },
+      { path: "products", element: <AdminProducts /> },
+      { path: "product-edit/:id", element: <EditProduct /> },
+      { path: "users", element: <UsersTable /> },
+      { path: "add-product", element: <AddProduct /> },
+      {
+        path: "product-edit/:id",
+        element: <EditProduct />,
       },
     ],
   },

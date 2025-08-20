@@ -20,7 +20,7 @@ export default function ProductTable({
   const navigate = useNavigate();
 
   const handleEdit = (product) => {
-    navigate(`/admin-product-edit/${product?._id}`);
+    navigate(`/admin/product-edit/${product?._id}`);
   };
 
   const handleDelete = (product) => {

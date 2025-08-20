@@ -48,9 +48,6 @@ export default function UsersTable() {
     <div className="overflow-x-auto">
       <div className="text-2xl font-bold mt-10 mb-5 flex justify-between w-[80%] mx-auto">
         <p>Total Users : {totalItems}</p>
-        <Link to={"/add-user"} className="text-blue-500 hover:underline">
-          Add New User
-        </Link>
       </div>
 
       <table className="w-full border border-gray-300 text-sm sm:text-base">
