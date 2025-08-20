@@ -13,7 +13,7 @@ const Register = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const { createUser, loading, setUsername, setUserId, setEmail } =
+  const { createUser, loading, setUsername, setUserId, setEmail, setRole } =
     useContext(AuthContext);
 
   const {
@@ -25,7 +25,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log("from : ", data.email, data.password);
+      // console.log("from : ", data.email, data.password);
       const result = await createUser(data?.email, data?.password);
       const loggedUser = result.user;
 
@@ -38,15 +38,14 @@ const Register = () => {
         const { data: userData } = await axiosI.post("/register", userInfo, {
           withCredentials: true,
         });
-        console.log('after register :',userData?.data?._id);
+        console.log("after register :", userData?.data?._id);
         if (userData) {
-          // 1. Set userId and username in AuthContext
           setUserId(userData?.data?._id);
           setUsername(userData?.data?.name);
           setEmail(userData?.data?.email);
+          setRole(userData?.data?.role);
         }
 
-        // 3. Show success
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -55,7 +54,6 @@ const Register = () => {
           timer: 1500,
         });
 
-        // 4. Navigate after cookie is set
         navigate("/");
       }
     } catch (error) {

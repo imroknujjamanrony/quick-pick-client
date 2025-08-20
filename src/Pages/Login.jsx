@@ -7,7 +7,15 @@ import axiosI from "../utils/axiosInstance.js";
 import Loader from "../Components/loader/Loader.jsx";
 
 const Login = () => {
-  const { signInUser, loading } = useContext(AuthContext);
+  const {
+    signInUser,
+    createUser,
+    loading,
+    setUsername,
+    setUserId,
+    setEmail,
+    setRole,
+  } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
@@ -18,37 +26,46 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async(data) => {
-    signInUser(data.email, data.password).then((result) => {
-      const user = result.user;
+  const onSubmit = async (data) => {
+    const result = await signInUser(data.email, data.password);
+    const user = result.user;
 
-      const userInfo = {
-        name : data?.name,
-        email : data?.emaill
-      }
+    const userInfo = {
+      name: data?.name,
+      email: data?.emaill,
+    };
 
-      if(user?.email) {
-       axiosI.post('/register', userInfo)
+    if (user?.email) {
+      const { data: userData } = await axiosI.post("/register", userInfo, {
+        withCredentials: true,
+      });
+      console.log("after register :", userData?.data?._id);
+      if (userData) {
+        setUserId(userData?.data?._id);
+        setUsername(userData?.data?.name);
+        setEmail(userData?.data?.email);
+        setRole(userData?.data?.role);
       }
-      Swal.fire({
-        title: "User Log in Successfully",
-        showClass: {
-          popup: `
+    }
+
+    Swal.fire({
+      title: "User Log in Successfully",
+      showClass: {
+        popup: `
               animate__animated
               animate__fadeInUp
               animate__faster
             `,
-        },
-        hideClass: {
-          popup: `
+      },
+      hideClass: {
+        popup: `
               animate__animated
               animate__fadeOutDown
               animate__faster
             `,
-        },
-      });
-      navigate(from, { replace: true });
+      },
     });
+    navigate(from, { replace: true });
   };
 
   return (
@@ -83,8 +100,7 @@ const Login = () => {
               type="email"
               {...register("email", {
                 required: true,
-                pattern:
-                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
               })}
               placeholder="Email"
               className="input input-bordered"

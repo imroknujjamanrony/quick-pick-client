@@ -16,6 +16,10 @@ const AdminLayout = () => {
                name : 'add-products',
                lin : '/admin/add-product'
            },
+           {
+               name : 'HOME',
+               lin : '/'
+           },
        ]
        return (
            <div className='flex justify-between items-center'>

@@ -13,6 +13,7 @@ const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState('');
   const [username, setUsername] = useState("");
   const [userEmail, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
 
   const createUser = (email, password) => {
@@ -55,6 +56,8 @@ const AuthProvider = ({ children }) => {
     username,
     userEmail,
     setEmail,
+    setRole,
+    role
   };
 
   return (
