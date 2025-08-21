@@ -14,6 +14,7 @@ import AuthTab from "../Components/AuthTab.jsx";
 import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
 import CartPage from "../Pages/Cart/Cart.jsx";
 import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
+import AddBlog from "../Pages/Blogs/AddBlog.jsx";
 
 
 export const router = createBrowserRouter([
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>,
+      },
+       {
+        path: "/addblog",
+        element: <AddBlog></AddBlog>,
       },
    
   {
