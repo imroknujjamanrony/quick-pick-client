@@ -16,11 +16,13 @@ import axiosI from "../../utils/axiosInstance";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { searchValue, setSearchValue } = useContext(SearchContext);
-  const { userId, username, userEmail } = useContext(AuthContext);
+  const { userId, username, userEmail, role } = useContext(AuthContext);
+
+  console.log(role)
+  console.log(userEmail)
 
   // console.log(userId, username, userEmail);
 
-  console.log(userEmail)
 
   const handleLogOut = async () => {
     await logout()

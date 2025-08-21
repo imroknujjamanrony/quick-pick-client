@@ -9,12 +9,9 @@ import Loader from "../Components/loader/Loader.jsx";
 const Login = () => {
   const {
     signInUser,
-    createUser,
     loading,
-    setUsername,
-    setUserId,
-    setEmail,
-    setRole,
+    setCurrentUser,
+    
   } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,15 +33,12 @@ const Login = () => {
     };
 
     if (user?.email) {
-      const { data: userData } = await axiosI.post("/register", userInfo, {
+      const { data: userData } = await axiosI.post("/login", userInfo, {
         withCredentials: true,
       });
-      console.log("after register :", userData?.data?._id);
+      console.log("after login :", userData?.data?._id);
       if (userData) {
-        setUserId(userData?.data?._id);
-        setUsername(userData?.data?.name);
-        setEmail(userData?.data?.email);
-        setRole(userData?.data?.role);
+        setCurrentUser(userData?.data);
       }
     }
 

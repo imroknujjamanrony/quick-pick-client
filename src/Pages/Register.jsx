@@ -13,8 +13,7 @@ const Register = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const { createUser, loading, setUsername, setUserId, setEmail, setRole } =
-    useContext(AuthContext);
+  const { createUser, loading, setCurrentUser } = useContext(AuthContext);
 
   const {
     register,
@@ -40,10 +39,7 @@ const Register = () => {
         });
         console.log("after register :", userData?.data?._id);
         if (userData) {
-          setUserId(userData?.data?._id);
-          setUsername(userData?.data?.name);
-          setEmail(userData?.data?.email);
-          setRole(userData?.data?.role);
+          setCurrentUser(userData?.data);
         }
 
         Swal.fire({

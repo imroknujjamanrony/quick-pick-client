@@ -11,10 +11,12 @@ import { auth } from "../firebase_init.js";
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState('');
-  const [username, setUsername] = useState("");
-  const [userEmail, setEmail] = useState("");
-  const [role, setRole] = useState("");
+const [currentUser, setCurrentUser] = useState('')
   const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    console.log('i am current user : ',currentUser)
+  },[currentUser])
 
   const createUser = (email, password) => {
     console.log("from provider", email, password);
@@ -52,12 +54,8 @@ const AuthProvider = ({ children }) => {
     logout,
     setUserId,
     userId,
-    setUsername,
-    username,
-    userEmail,
-    setEmail,
-    setRole,
-    role
+    setCurrentUser,
+    currentUser
   };
 
   return (
