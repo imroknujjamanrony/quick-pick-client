@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { AuthContext } from "../providers/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 
   
@@ -119,6 +120,10 @@ navigate('/')
 <div className="flex gap-2">
     <input type="radio" name="radio-1"  />
 <p>I am a vendor</p>
+</div>
+
+<div>
+  <p>Your personal data will be used to support your experience throughout this website, to manage access to your account , and for other  purpose discuss in our <Link to = '/privacypolicy'><span className="text-[#634c95]"> privacy policy</span></Link></p>
 </div>
 
             <div className="form-control mt-6 text-center">
