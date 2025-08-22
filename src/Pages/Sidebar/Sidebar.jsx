@@ -4,7 +4,7 @@ import SocialMedia from '../SocialMedia/SocialMedia';
 
 const Sidebar = ({ blogs }) => {
   return (
-    <div className="p-3 sm:p-4 lg:p-6">
+    <div className="p-3 sm:p-4 grid grid-cols-1 lg:p-6">
       <h2 className="text-black text-sm sm:text-base md:text-lg mb-4 font-bold">
         Blog Post List
       </h2>

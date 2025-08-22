@@ -22,6 +22,7 @@ import EditProduct from "../Pages/filter-products/EditProduct.jsx";
 import BlogsDetails from "../Pages/Blogs/BlogsDetails.jsx";
 import CartPage from "../Pages/Cart/Cart.jsx";
 import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
+import AddBlog from "../Pages/Blogs/AddBlog.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -44,27 +45,42 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
-      {
-        path: "/updatetovendor",
-        element: <UpdateToVendor />,
+       {
+        path: "/addblog",
+        element: <AddBlog></AddBlog>,
       },
-      {
-        path: "/blogs",
-        element: <Blogs />,
-        loader: async () => {
-          const blogsRes = await fetch(
-            "https://quick-pick-server-zeta.vercel.app/jinStoreBlogsCollection"
-          );
-          const countRes = await fetch(
-            "https://quick-pick-server-zeta.vercel.app/blogsCollectionCount"
-          );
+   
+  {
+ {
+  path: "/blogs",
+  element: <Blogs />,
+  loader: async () => {
+    const blogsRes = await fetch(
+      "https://quick-pick-server-zeta.vercel.app/jinStoreBlogsCollection"
+    );
+    const countRes = await fetch(
+      "https://quick-pick-server-zeta.vercel.app/blogsCollectionCount"
+    );
 
-          const blogs = await blogsRes.json();
-          const count = await countRes.json();
+    const blogs = await blogsRes.json();
+    const count = await countRes.json();
 
-          return { blogs, count };
-        },
-      },
+    return { blogs, count };
+  },
+},
+{
+  path: "/blogs/:id",
+  element: <BlogsDetails />,
+  loader: ({ params }) =>
+    fetch(
+      `https://quick-pick-server-zeta.vercel.app/jinStoreBlogsCollection/${params.id}`
+    ),
+},
+{
+  path: "/updatetovendor",
+  element: <UpdateToVendor />,
+},
+      
       {
         path: "/blogs/:id",
         element: <BlogsDetails />,
