@@ -25,6 +25,7 @@ import CheckoutPage from "../Pages/CheckoutPage/CheckoutPage.jsx";
 import UsersTable from "../Components/UsersTable.jsx";
 import AdminLayout from "../Layouts/admin/AdminLayout.jsx";
 import AdminHome from "../Pages/admin/AdminHome.jsx";
+import Dashboard from "../Pages/admin/Dashboard.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -110,7 +111,7 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: <AdminLayout />,
     children: [
-      { index: true, element: <AdminHome /> },
+      { index: true, element: <Dashboard/> },
       { path: "products", element: <AdminProducts /> },
       { path: "product-edit/:id", element: <EditProduct /> },
       { path: "users", element: <UsersTable /> },

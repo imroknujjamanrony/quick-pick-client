@@ -153,7 +153,7 @@ const Login = () => {
               className="btn bg-[#634c95] text-white w-full"
               type="submit"
             >
-              {loading ? <Loader /> : "Register"}
+              {loading ? <Loader /> : " Login"}
             </button>
           </div>
         </form>
